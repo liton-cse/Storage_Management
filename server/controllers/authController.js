@@ -273,7 +273,8 @@ export const googleAuth = async (req, res, next) => {
   try {
     const { tokens } = await oauth2Client.getToken({
       code,
-      redirect_uris: "http://localhost:5000/api/auth/google",
+      redirect_uris:
+        "https://storage-management-backend.onrender.com/api/auth/google",
     });
     oauth2Client.setCredentials(tokens);
     const userRes = await axios.get(
