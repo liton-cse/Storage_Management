@@ -431,7 +431,7 @@ export const shareEntity = async (req, res) => {
     }
 
     // Generate shareable link
-    const baseUrl = process.env.APP_BASE_URL || "https://yourapp.com";
+    const baseUrl = process.env.APP_BASE_URL || "https://storage-management-backend.onrender.com";
     let sharePath, message;
 
     switch (entityType) {
