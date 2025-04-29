@@ -1,0 +1,181 @@
+/* Mobile First Approach - Row Layout for All Devices */
+.home-area {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: 70px;
+    margin-bottom: 70px;
+    overflow: hidden;
+  }
+  
+  .home-card {
+    display: flex;
+    flex-direction:column;
+    gap: 14px;
+    width: 100%;
+  }
+  
+  /* Changed to row layout for mobile */
+  .home-card-first {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 14px;
+    width: 100%;
+  }
+  
+  /* Changed to row layout for mobile */
+  .home-card-second {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 14px;
+    width: 100%;
+  }
+  
+  .home-card-duble,
+  .home-card-single {
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  /* Beautiful card styling - Applied to all devices */
+  .home-card-duble {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    flex: 2;
+    min-width: 100px; /* Minimum width for mobile */
+  }
+  
+  .home-card-duble .home-card-heading h1,
+  .home-card-duble p {
+    color: white;
+  }
+  
+  .home-card-single {
+    flex: 1;
+    min-width: 50px; /* Minimum width for mobile */
+  }
+  
+  .home-card-single:nth-child(1) {
+    background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+  }
+  
+  .home-card-single:nth-child(2) {
+    background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+  }
+  
+  .home-card-single:nth-child(3) {
+    background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+  }
+  
+  .home-card-single:nth-child(4) {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+  }
+  
+  .home-card-single:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  }
+  
+  .home-card-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .home-card-heading .img {
+    width: 24px;
+    height: 24px;
+  }
+  .home-card-heading .img-image {
+    width: 24px;
+    height: 24px;
+    color: #04b00a;
+    
+  }
+
+  .home-card-heading .img-pdf {
+    width: 24px;
+    height: 24px;
+    color: rgb(226, 55, 55);
+  }
+  .home-card-heading img {
+    width: 24px;
+    height: 24px;
+  }
+ 
+  .home-card-heading h1 {
+    font-size: 12px;
+    font-weight: 500;
+    color: #2d3748;
+    margin: 0;
+  }
+  
+  .home-card p {
+    font-size: 10px;
+    font-weight: 400;
+    margin: 8px 0;
+  }
+  
+  /* Ensure text is readable on colored backgrounds */
+  .home-card-single .home-card-heading h1,
+  .home-card-single p {
+    color: #2d3748;
+  }
+  
+  /* Tablet Layout (768px and up) */
+  @media (min-width: 768px) {
+    .home-area {
+      margin-top: 60px;
+      margin-left: 140px;
+      padding: 16px;
+    }
+    
+    .home-card-duble {
+      flex: 2; /* 2/3 width */
+    }
+    
+    .home-card-first .home-card-single {
+      flex: 1; /* 1/3 width */
+    }
+    
+    .home-card-second .home-card-single {
+      flex: 1; /* Each takes equal 1/3 width */
+    }
+  }
+  
+  /* Desktop Enhancements (1024px and up) */
+  @media (min-width: 1024px) {
+    .home-area {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 24px;
+    }
+    
+    .home-card {
+      gap: 24px;
+    }
+    
+    .home-card-heading h1 {
+      font-size: 20px;
+    }
+    
+    .home-card p {
+      font-size: 16px;
+    }
+    
+    /* Slightly larger hover effect on desktop */
+    .home-card-single:hover {
+      transform: translateY(-6px);
+    }
+    
+    /* Prevent wrapping on desktop */
+    .home-card-first,
+    .home-card-second {
+      flex-wrap: nowrap;
+    }
+  }

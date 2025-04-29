@@ -1,0 +1,172 @@
+/* Mobile First Approach */
+.setting-area {
+    width: 100%;
+    /* min-height: 100vh; */
+    background-color: #f5f5f5;
+    margin: 60px 0px auto;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+    padding-bottom: 80px; /* Space for fixed delete button */
+  }
+  
+  .setting {
+    width: 100%;
+    max-width:400px ;
+    margin: 0 auto;
+    align-items: center;
+  }
+  
+  .settign-heading h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin: 4rem 0rem;
+    text-align: center;
+
+  }
+  
+  .setting-action {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .setting-action > div {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    
+  }
+  
+  .setting-action a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .action-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 16px;
+  }
+  
+  .action-left svg {
+    font-size: 20px;
+    color: #555;
+  }
+  
+  .action-right svg {
+    color: #999;
+  }
+  
+  .delete-account {
+    width: 90%;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background-color: #303030;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    color: #ffffff;
+    margin: 0.5rem auto;
+    position: fixed;
+    bottom: 4.7rem;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+  }
+  
+  .delete-account button {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    justify-content: flex-start;
+  }
+  
+
+  
+  /* Tablet and above */
+  @media (min-width: 768px) {
+    .setting-area {
+      padding: 30px;
+      padding-bottom: 90px;
+      max-width: 1000px;
+      margin: 60px auto;
+    }
+    
+    .setting {
+      max-width: 450px;
+    }
+    
+    .settign-heading h1 {
+      font-size: 28px;
+    }
+    
+    .setting-action {
+      gap: 20px;
+      
+    }
+    
+    .setting-action a {
+      padding: 18px 20px;
+    }
+    
+    .action-left {
+      font-size: 18px;
+    }
+    .delete-account{
+        position: absolute;
+        margin-top: 2rem;
+    }
+    
+    .delete-account {
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 450px;
+      bottom: 30px;
+    }
+  }
+  
+  /* Desktop and above */
+  @media (min-width: 1024px) {
+    .setting-area {
+      padding: 40px;
+      padding-bottom: 100px;
+      max-width: 1200px;
+      margin: 60px auto;
+    }
+    
+    .setting {
+      max-width: 500px;
+    }
+    
+    .settign-heading h1 {
+      font-size: 32px;
+      margin-bottom: 3rem;
+    }
+    
+    .setting-action {
+      gap: 25px;
+      
+    }
+
+    .delete-account {
+      max-width: 500px;
+    }
+  }

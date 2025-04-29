@@ -1,0 +1,145 @@
+/* Logout.css - Mobile First Approach */
+
+/* Base Styles (Mobile) */
+.delete-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent overlay */
+    padding: 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out forwards;
+  }
+  
+  .delete {
+    width: 100%;
+    max-width: 400px;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    text-align: center;
+  }
+  
+  .delete-heading h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  .delete-para p {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 2rem;
+  }
+  
+  .delete-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+  }
+  
+  .delete-buttons button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+    max-width: 150px;
+  }
+  
+  .delete-cancel {
+    background-color: #f5f5f5;
+    color: #333;
+    border: 1px solid #ddd;
+  }
+  
+  .delete-cancel:hover {
+    background-color: #e9e9e9;
+  }
+  
+  .delete-confirm {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+  }
+  
+  .delete-confirm:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Tablet Devices (min-width: 768px) */
+  @media (min-width: 768px) {
+    .delete {
+      padding: 2.5rem;
+      max-width: 450px;
+    }
+  
+    .delete-heading h1 {
+      font-size: 1.75rem;
+    }
+  
+    .delete-para p {
+      font-size: 1.1rem;
+    }
+  
+    .delete-buttons button {
+      padding: 0.875rem 1.75rem;
+      font-size: 1.1rem;
+    }
+  }
+  
+  /* Desktop Devices (min-width: 1024px) */
+  @media (min-width: 1024px) {
+    .delete {
+      max-width: 500px;
+      padding: 3rem;
+    }
+  
+    .delete-heading h1 {
+      font-size: 2rem;
+      margin-bottom: 1.25rem;
+    }
+  
+    .delete-para p {
+      font-size: 1.15rem;
+      margin-bottom: 2.5rem;
+    }
+  
+    .delete-buttons {
+      gap: 1.5rem;
+    }
+  
+    .delete-buttons button {
+      padding: 1rem 2rem;
+      font-size: 1.15rem;
+      max-width: 180px;
+    }
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Focus states for accessibility */
+  .delete-buttons button:focus-visible {
+    outline: 3px solid #3498db;
+    outline-offset: 2px;
+  }
+  
+  /* Active state for buttons */
+  .delete-buttons button:active {
+    transform: scale(0.98);
+  }

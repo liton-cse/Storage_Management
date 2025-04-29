@@ -1,0 +1,22 @@
+{
+    "pdf": {
+      "component": "BsFileEarmarkPdfFill",
+      "className": "img-pdf",
+      "color": "#f56565"
+    },
+    "image": {
+      "component": "FaImage",
+      "className": "img-image",
+      "color": "#4299e1"
+    },
+    "note": {
+      "component": "CustomNote",
+      "className": "img-note",
+      "color": "#48bb78"
+    },
+    "folder": {
+      "component": "FcFolder",
+      "className": "img-folder",
+      "color": "#ed8936"
+    }
+  }

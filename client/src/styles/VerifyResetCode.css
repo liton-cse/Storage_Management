@@ -1,0 +1,105 @@
+/* VerifyResetCode.css */
+
+/* General Styles */
+.verify-reset-code-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
+}
+
+.verify-reset-code {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+}
+
+.verify-reset-code-header {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #079992;
+}
+
+.verify-reset-code-box {
+  width: 100%;
+}
+
+.verify-reset-code-box form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.verify-reset-code-box input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: border 0.3s ease-in-out;
+}
+
+.verify-reset-code-box input:focus {
+  border-color: #079992;
+  box-shadow: 0px 0px 5px rgba(7, 153, 146, 0.5);
+  outline: none;
+}
+
+.verify-reset-code-box button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #079992;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.verify-reset-code-box button:hover {
+  background-color: #023835;
+}
+.verify {
+  text-align: right;
+  margin-top: 0.5rem;
+}
+.verify .resend-button {
+  font-size: 0.9rem;
+  color: #079992;
+  text-decoration: none;
+  margin-top: 1rem;
+  border: none;
+}
+
+.resend-button:hover {
+  color: #2db5b0;
+  text-decoration: underline;
+}
+
+/* Responsive Design for Web */
+@media (min-width: 768px) {
+  .verify-reset-code {
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .verify-reset-code h1 {
+    font-size: 2rem;
+  }
+
+  .verify-reset-code-box input,
+  .verify-reset-code-box button,
+  .resend-button {
+    font-size: 1rem;
+  }
+}

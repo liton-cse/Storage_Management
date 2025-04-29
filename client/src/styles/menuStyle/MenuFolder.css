@@ -1,0 +1,117 @@
+/* Base styles (mobile) */
+.menu-folder-area {
+    padding: 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+.folder-heading{
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+  .menu-folder-container {
+    max-width: 100%;
+    margin: 60px 0px auto;
+  }
+  
+  .loading, .empty {
+    text-align: center;
+    padding: 2rem;
+    color: #666;
+  }
+  
+  .folder-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .folder-item {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex; /* Changed to flex */
+    flex-direction: row; /* Icon above content */
+    gap:1rem
+  }
+  
+  .folder-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  
+  .folder-icon {
+    width: 24px;
+    height: 24px;
+  }
+  
+  .folder-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: rgb(152, 152, 4);
+  }
+  
+  .folder-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1; /* Takes remaining space */
+  }
+  
+  .folder-name-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+  }
+  
+  .folder-name {
+    font-weight: 600;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-right: 0.5rem; /* Space between name and date */
+  }
+  
+  .folder-date {
+    font-size: 0.8rem;
+    color: #666;
+    white-space: nowrap;
+  }
+  
+  .folder-meta {
+    font-size: 0.8rem;
+    color: #666;
+  }
+  
+  /* Tablet styles */
+  @media (min-width: 600px) {
+    .folder-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  
+  /* Desktop styles */
+  @media (min-width: 900px) {
+    .menu-folder-container {
+      max-width: 1200px;
+    }
+    
+    .folder-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  
+  /* Large desktop */
+  @media (min-width: 1200px) {
+    .menu-folder-area {
+      max-width: 1200px;
+      margin: 60px auto;
+    }
+    .folder-grid {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }

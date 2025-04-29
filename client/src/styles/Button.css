@@ -1,0 +1,107 @@
+/* Base Styles (Mobile) */
+.plus-btn {
+    position: fixed;
+    bottom: 5rem;
+    right: 0.5rem;
+    z-index: 20;
+  }
+  
+  .plus-btn__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .plus-btn__trigger:hover {
+    background-color: #2563eb;
+    transform: scale(1.05);
+  }
+  
+  .plus-btn__menu {
+    position: absolute;
+    bottom: calc(100% + 0.5rem); /* Positions menu above button with small gap */
+    right: 0.5rem;
+    width: 8rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 0.5rem 0;
+    z-index: 10;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+  }
+  
+  .plus-btn__menu--open {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+  
+  .plus-btn__item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+    color: #374151;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .plus-btn__item:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .plus-btn__icon {
+    margin-right: 0.75rem;
+    font-size: 1.1rem;
+  }
+  
+  .plus-btn__item--folder .plus-btn__icon {
+    color: #3b82f6;
+  }
+  
+  .plus-btn__item--file .plus-btn__icon {
+    color: #10b981;
+  }
+  
+  .plus-btn__item--note .plus-btn__icon {
+    color: #f59e0b;
+  }
+  
+  .plus-btn__item--upload .plus-btn__icon {
+    color: #8b5cf6;
+  }
+  
+  .plus-btn__file-input {
+    display: none;
+  }
+  
+  /* Hide menu completely on desktop */
+  @media (min-width: 768px) {    
+    .plus-btn__trigger {
+      width: 4rem;
+      height: 4rem;
+    }
+  }
+
+
+  @media (min-width: 1024px) {  
+    .plus-btn {
+        right: 0.5rem;
+        bottom:0.5rem;
+    }  
+  }

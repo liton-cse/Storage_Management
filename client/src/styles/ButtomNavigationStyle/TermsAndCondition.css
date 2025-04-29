@@ -1,0 +1,92 @@
+/* Mobile First Approach */
+.privacy-area {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+    margin: 60px 0px auto;
+  }
+  
+  .privacy-container {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    max-width: 100%;
+    margin-bottom: 3rem;
+  }
+  
+  .privacy-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #e9ecef;
+  }
+  
+  .privacy-header h1 {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+  
+  .privacy-content {
+    line-height: 1.6;
+    color: #34495e;
+    margin-bottom: 2rem;
+  }
+  
+  .policy-paragraph {
+    margin-bottom: 1.2rem;
+    text-align: justify;
+  }
+  
+  .numbered-item {
+    margin-bottom: 1.2rem;
+    padding-left: 1.5rem;
+    text-indent: -1.5rem;
+    text-align: justify;
+  }
+  
+  .numbered-item::before {
+    content: "";
+    display: inline-block;
+    width: 1.5rem;
+  }
+  
+  /* Tablet Styles */
+  @media (min-width: 768px) {
+    .privacy-area {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 60px auto;
+      
+    }
+    
+    .privacy-container {
+      padding: 2rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .privacy-header h1 {
+      font-size: 1.75rem;
+    }
+    
+    .privacy-content {
+      font-size: 1.05rem;
+    }
+  }
+  
+  /* Desktop Styles */
+  @media (min-width: 1024px) {
+    .privacy-container {
+      padding: 3rem;
+    }
+    
+    .privacy-header h1 {
+      font-size: 2rem;
+    }
+    
+    .privacy-content {
+      font-size: 1.1rem;
+    }
+  }

@@ -1,0 +1,220 @@
+/* Mobile-First Design */
+.header-area {
+  width: 100%;
+  background-color: #0a152f;
+  color: white;
+  padding: 10px 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000; /* Ensure it stays above other content */
+}
+
+.header {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Improved Search Box Styles */
+.header-search-box {
+  flex: 1;
+  margin-right: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.header-search-box input {
+  width: 100%;
+  padding: 6px 35px 6px 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  background-color: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+.header-search-box input:focus {
+  outline: none;
+  background-color: white;
+  box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.3);
+}
+
+.search-button {
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.search-icon {
+  color: #555;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.search-button:hover .search-icon {
+  color: #27ae60;
+}
+
+.header-menu {
+  display: flex;
+  align-items: center;
+}
+
+.menu-icon {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.menu-icon span {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+  margin: 4px 0;
+  transition: 0.4s;
+}
+
+.menu-icon span.open {
+  background-color: #ff6347;
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: none;
+  flex-direction: column;
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  background-color: #333;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.menu-list.show {
+  display: flex;
+}
+
+.menu-list li {
+  padding: 10px 20px;
+  position: relative; /* For active link styling */
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.menu-list li a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+.menu-list li .logout-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: white;
+}
+
+.menu-list li .logout-button:hover {
+  color: #27ae60;
+  text-decoration: underline;
+}
+
+/* Hover Effect */
+.menu-list li:hover {
+  background-color: #333; /* Background color on hover */
+}
+
+.menu-list li a:hover {
+  color: #27ae60; /* Text color on hover */
+}
+
+/* Active Link Styling */
+.menu-list li.active a {
+  color: #27ae60; /* Active link color */
+}
+
+.menu-list li.active::after {
+  content: "";
+  position: absolute;
+  bottom: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 2px;
+  background-color: #27ae60; /* Underline color */
+}
+
+/* Tablet and Larger Screens */
+@media (min-width: 480px) {
+  .header-search-box {
+    margin-right: 20px;
+  }
+  
+  .header-search-box input {
+    padding: 8px 40px 8px 15px;
+    font-size: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .header-menu {
+    flex: 1;
+    justify-content: flex-end;
+  }
+
+  .menu-icon {
+    display: none;
+  }
+
+  .menu-list {
+    display: flex;
+    flex-direction: row;
+    position: static;
+    background-color: transparent;
+  }
+
+  .menu-list li {
+    padding: 0 15px;
+  }
+  
+  .menu-list li:hover {
+    background-color: transparent;
+  }
+
+  .menu-list li a {
+    font-size: 1rem;
+  }
+  
+  .menu-list li a:hover {
+    text-decoration: underline;
+  }
+
+  /* Active Link Styling for Web */
+  .menu-list li.active::after {
+    bottom: -5px; /* Adjust position for horizontal layout */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: #27ae60; /* Underline color */
+  }
+}

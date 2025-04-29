@@ -1,0 +1,244 @@
+/* Mobile First Styles */
+.calender-area{
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    background-color: #f5f5f5;
+    margin: 60px 0px auto;
+}
+.calendar-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem;
+    box-sizing: border-box;
+  }
+
+  .dropdown-container {
+    position: relative;
+    margin-bottom: 1rem;
+  }
+
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .calendar-header h2 {
+    margin: 0;
+    flex-grow: 1;
+    text-align: center;
+  }
+  
+  .calendar-header button {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: #333;
+  }
+  
+  .calendar-header button:hover {
+    color: #2196f3;
+  }
+  
+  .dropdown-display {
+    padding: 0.75rem 1rem;
+    background-color: #f5f5f5;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+  }
+  
+  .dropdown-arrow {
+    font-size: 0.8rem;
+    transition: transform 0.2s;
+  }
+  
+  .dropdown-arrow.down {
+    transform: rotate(0deg);
+  }
+  
+  .dropdown-arrow.up {
+    transform: rotate(180deg);
+  }
+  
+  /* Remove the date input styling - we'll handle this differently */
+  .date-input {
+    display: none; /* Instead of opacity: 0 */
+  }
+  
+  .calendar-popup {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  .calendar-header h2 {
+    text-align: center;
+    margin: 0.5rem 0 1rem;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .calendar-grid {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+  }
+  
+  .calendar-grid th {
+    padding: 0.5rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+    font-weight: normal;
+  }
+  
+  .calendar-grid td {
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid #eee;
+    cursor: pointer;
+    position: relative;
+    height: 2.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .calendar-grid td.other-month {
+    color: #ccc;
+  }
+  
+  .calendar-grid td.selected {
+    background-color: #e3f2fd;
+    font-weight: bold;
+  }
+  
+  .calendar-grid td.has-events::after {
+    content: '';
+    position: absolute;
+    bottom: 0.2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0.4rem;
+    height: 0.4rem;
+    border-radius: 50%;
+    background-color: #2196f3;
+  }
+  
+  .day-number {
+    margin-bottom: 0.2rem;
+  }
+  
+  .events-list {
+    padding: 1rem;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+  }
+  
+  .events-list h3 {
+    margin-top: 0;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .events-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 0;
+  }
+  
+  .events-list li {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .loading, .error {
+    padding: 1rem;
+    text-align: center;
+    margin: 1rem 0;
+    border-radius: 4px;
+  }
+  
+  .loading {
+    background-color: #fff8e1;
+    color: #ff8f00;
+  }
+  
+  .error {
+    background-color: #ffebee;
+    color: #c62828;
+  }
+  
+  /* Tablet Styles (min-width: 600px) */
+  @media (min-width: 600px) {
+    .calendar-container {
+      max-width: 90%;
+    }
+  
+    .calendar-popup {
+      position: absolute;
+      width: 300px;
+      z-index: 100;
+    }
+  
+    .calendar-grid td {
+      height: 3rem;
+      font-size: 1rem;
+    }
+  
+    .calendar-grid th {
+      font-size: 0.9rem;
+    }
+  
+    .calendar-header h2 {
+      font-size: 1.4rem;
+    }
+  
+    .events-list h3 {
+      font-size: 1.2rem;
+    }
+  }
+  
+  /* Desktop Styles (min-width: 900px) */
+  @media (min-width: 900px) {
+    .calender-area{
+        max-width: 1200px;
+        margin: 60px auto;
+    }
+    .calendar-container {
+      max-width: 500px;
+      /* display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem; */
+      align-items: start;
+      margin:1rem;
+    }
+  
+    .dropdown-container {
+      grid-column: 1 / -1;
+    }
+  
+    .calendar-header h2 {
+      font-size: 1rem;
+    }
+  
+    .calendar-grid td {
+      height: 2rem;
+    }
+  
+    .events-list {
+      padding: 1rem;
+    }
+  }

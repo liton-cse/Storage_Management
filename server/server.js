@@ -1,0 +1,46 @@
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
+import menuRoutes from "./routes/menuRoutes.js";
+import actionRoutes from "./routes/actionRoutes.js";
+import navigationButtomRoutes from "./routes/navigationButtomRoutes.js";
+dotenv.config();
+
+// Built in middlware....
+const app = express();
+app.use(express.json());
+app.use("/uploads", express.static("uploads"));
+app.use("/Profile_Picture", express.static("Profile_Picture"));
+// CORS Middleware
+const allowOrigins = ["http://localhost:5173"];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allow by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
+app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  next();
+});
+
+//Database Connection//
+connectDB();
+
+//All App Routes..
+app.use("/api/auth", authRoutes);
+app.use("/api", menuRoutes);
+app.use("/api", actionRoutes);
+app.use("/api", navigationButtomRoutes);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

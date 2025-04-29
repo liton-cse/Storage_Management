@@ -1,0 +1,144 @@
+/* Mobile-First Design */
+.buttom-nav-area {
+  width: 100%;
+  background-color: #0a152f;
+  color: white;
+  padding: 10px 0;
+  position: fixed;
+  overflow: hidden;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.buttom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 10px;
+}
+
+.buttom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 5px;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  position: relative;
+}
+
+.buttom-nav-item svg {
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 5px;
+}
+
+.buttom-nav-item a {
+  text-decoration: none;
+  color: white;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* Active Link Styling */
+.buttom-nav-item.active a {
+  color: #27ae60; /* Active link color */
+}
+
+.buttom-nav-item.active::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 2px;
+   
+  filter: blur(2px);
+}
+
+.buttom-nav-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 2px;
+  background-color: #27ae60; /* Underline color */
+}
+
+/* Tablet and Larger Screens - Sidebar */
+@media (min-width: 768px) {
+  .buttom-nav-area {
+    width:120px; /* Sidebar width */
+    height: 50vh; /* Sidebar height */
+    top: 0;
+    bottom: auto;
+    position: fixed;
+    background-color: rgb(251, 251, 251);
+    color: #333;
+    box-shadow: none;
+    padding: 20px 0;
+    margin-top: 55px;
+    margin-left: 5px;
+    z-index: 1000; /* Ensure sidebar is above other content */
+    border-right: 2px solid #ccc; /* Vertical line at the end of the sidebar */
+  }
+
+  .buttom-nav {
+    flex-direction: column; /* Stack items vertically */
+    justify-content: flex-start; /* Align items to the top */
+    gap: 15px; /* Space between items */
+    padding: 10px;
+  }
+
+  .buttom-nav-item {
+    flex-direction: row; /* Icon and text beside each other */
+    align-items: center;
+    gap: 10px; /* Space between icon and text */
+    padding: 10px;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+    border-radius: 5px; /* Rounded corners for hover effect */
+  }
+
+  .buttom-nav-item:hover {
+    /* background-color: #f0f0f0; Background color on hover */
+    background-color: #d0d0d0;
+  }
+
+  .buttom-nav-item svg {
+    margin-bottom: 0; /* Remove margin for web view */
+    color: #333;
+  }
+
+  .buttom-nav-item a {
+    font-size: 1rem; /* Larger text for web view */
+    color: #333;
+    text-decoration: none; /* Remove underline from links */
+  }
+
+  /* Active Link Styling for Web */
+  .buttom-nav-item.active::before {
+    top: 50%;
+    left: -10px;
+    transform: translateY(-50%);
+    width: 2px;
+    height: 80%;
+    filter: blur(2px);
+    background-color: #27ae60; /* Blur line color */
+  }
+
+  .buttom-nav-item.active::after {
+    bottom: 50%;
+    left: -5px;
+    transform: translateY(50%);
+    width: 2px;
+    height: 80%;
+    background-color: #27ae60; /* Underline color */
+  }
+}
