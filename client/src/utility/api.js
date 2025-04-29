@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api", // Backend base URL
+  baseURL: "https://storage-management-backend.onrender.com/api", // Backend base URL
 });
 
 // Add JWT token to requests
