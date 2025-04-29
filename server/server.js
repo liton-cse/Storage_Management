@@ -14,7 +14,10 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 app.use("/Profile_Picture", express.static("Profile_Picture"));
 // CORS Middleware
-const allowOrigins = ["http://localhost:5173"];
+const allowOrigins = [
+  "https://storage-management-fronend.onrender.com",
+  "http://localhost:5173",
+];
 app.use(
   cors({
     origin: function (origin, callback) {
