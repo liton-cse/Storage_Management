@@ -17,7 +17,7 @@ const GoogleLogin = () => {
         }
         localStorage.setItem("token", response.data.token);
 
-        window.location.href = "/home";
+        window.location.href = "/";
       } catch (error) {
         console.error("Google login error:", error);
       }
