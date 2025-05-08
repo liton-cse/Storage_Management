@@ -16,15 +16,21 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
-// Update your static file configuration to:
 app.use(
   "/profile_picture",
-  express.static(path.join(__dirname, "profile_picture"), {
-    setHeaders: (res) => {
-      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
-    },
-  })
+  express.static(path.join(__dirname, "profile_picture"))
 );
+
+// Update your static file configuration to:
+// app.use(
+//   "/profile_picture",
+//   express.static(path.join(__dirname, "profile_picture"), {
+//     setHeaders: (res) => {
+//       res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+//     },
+//   })
+// );
+
 // CORS Middleware
 const allowedOrigins = [
   "http://localhost:5173", // For local development
