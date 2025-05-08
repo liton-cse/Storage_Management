@@ -344,7 +344,7 @@ export const googleAuth = async (req, res) => {
     const { tokens } = await oauth2Client.getToken(code);
 
     // 2. Verify ID token
-    const ticket = await oauth2Client.verifyIdToken({
+    const ticket = oauth2Client.verifyIdToken({
       idToken: tokens.id_token,
       audience: process.env.GOOGLE_CLIENT_ID,
     });

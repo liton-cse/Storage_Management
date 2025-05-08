@@ -4,9 +4,9 @@ import { useAuth } from "../context/AuthContext.jsx";
 const GoogleLogin = () => {
   const { googleLoginFunction } = useAuth();
   // Get the correct redirect URI based on environment
-  const getRedirectUri = () => {
-    return window.location.origin; // Dynamically gets current origin (localhost or production)
-  };
+  // const getRedirectUri = () => {
+  //   return window.location.origin; // Dynamically gets current origin (localhost or production)
+  // };
 
   const googleLogin = useGoogleLogin({
     onSuccess: async ({ code }) => {
@@ -16,9 +16,6 @@ const GoogleLogin = () => {
         if (!response.data?.token) {
           throw new Error("Authentication failed - no token received");
         }
-        // email: response.data.user.email,
-        // name: response.data.user.name,
-        // picture: response.data.user.picture,
         localStorage.setItem("token", response.data.token);
 
         window.location.href = "/home";
@@ -32,7 +29,7 @@ const GoogleLogin = () => {
     flow: "auth-code",
     clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
     // ux_mode: "redirect",
-    redirect_uri: getRedirectUri(),
+    redirect_uri: import.meta.env.VITE_FRONTEND_URL,
     scope: "openid profile email",
   });
   return (
