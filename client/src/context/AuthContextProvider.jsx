@@ -84,8 +84,8 @@ export const AuthContextProvider = ({ children }) => {
   };
   // Function for Signing...
 
-  const handleSignup = async (formDataToSend, config) => {
-    const signInUser = await signupUser(formDataToSend, config);
+  const handleSignup = async (formDataToSend) => {
+    const signInUser = await signupUser(formDataToSend);
     if (signInUser.success) {
       setUser(signInUser);
       return { signInUser }; // Update state immediately

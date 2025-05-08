@@ -15,8 +15,8 @@ API.interceptors.request.use((config) => {
 
 /********      Auth Api       ******** */
 //Auth Api for Start..
-export const signup = (formDataToSend, config) =>
-  API.post("/auth/signup", formDataToSend, config);
+export const signup = (formDataToSend) =>
+  API.post("/auth/signup", formDataToSend);
 export const login = (data) => API.post("/auth/login", data);
 export const forgotPassword = (email) =>
   API.post("/auth/forgot-password", { email });

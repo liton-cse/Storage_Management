@@ -6,9 +6,10 @@ import {
   resetPassword,
 } from "../utility/api.js";
 
-export const signupUser = async (formDataToSend, config) => {
+export const signupUser = async (formDataToSend) => {
+  console.log(formDataToSend);
   try {
-    const response = await signup(formDataToSend, config);
+    const response = await signup(formDataToSend);
     localStorage.setItem("token", response.data.token);
     return { success: true, userData: response.data };
   } catch (error) {

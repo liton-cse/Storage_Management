@@ -76,15 +76,10 @@ const AuthForm = ({ type }) => {
         formDataToSend.append("name", formData.name);
         formDataToSend.append("email", formData.email);
         formDataToSend.append("password", formData.password);
+        formDataToSend.append("confirmPassword", formData.confirmPassword);
         formDataToSend.append("avatar", formData.avatar);
 
-        // Add headers for FormData
-        const config = {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        };
-        const response = await handleSignup(formDataToSend, config);
+        const response = await handleSignup(formDataToSend);
         if (response?.signInUser?.success) {
           setFormData({
             email: "",

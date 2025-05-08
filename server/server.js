@@ -43,7 +43,7 @@ app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
   res.setHeader(
     "Access-Control-Allow-Origin",
-    process.env.GOOGLE_REDIRECT_URI || "http://localhost:5173 "
+    process.env.GOOGLE_REDIRECT_URI || "http://localhost:5173"
   );
   next();
 });
