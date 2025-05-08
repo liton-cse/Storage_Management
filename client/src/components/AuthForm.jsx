@@ -52,7 +52,7 @@ const AuthForm = ({ type }) => {
             image: null,
           });
           setPreviewImage(null);
-          navigate("/home");
+          navigate("/");
         }
       } else if (type === "signup") {
         if (

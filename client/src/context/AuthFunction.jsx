@@ -33,7 +33,7 @@ export const loginUser = async (data) => {
   } catch (error) {
     return {
       success: false,
-      message: error.response?.data?.message || "Registration Failed",
+      message: error.response?.data?.message || "Login Failed",
     };
   }
 };
