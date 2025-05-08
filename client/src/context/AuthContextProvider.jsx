@@ -73,8 +73,8 @@ export const AuthContextProvider = ({ children }) => {
   };
 
   // Function to handle login
-  const handleLogin = async ({ email, password }) => {
-    const loggedInUser = await loginUser({ email, password });
+  const handleLogin = async (data) => {
+    const loggedInUser = await loginUser(data);
     if (loggedInUser.success) {
       setUser(loggedInUser.userData.token);
       return { loggedInUser }; // Update state immediately
