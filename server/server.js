@@ -15,11 +15,6 @@ dotenv.config();
 // Built in middlware....
 const app = express();
 app.use(express.json());
-app.use("/uploads", express.static("uploads"));
-app.use(
-  "/profile_picture",
-  express.static(path.join(__dirname, "profile_picture"))
-);
 
 // Update your static file configuration to:
 // app.use(
@@ -56,7 +51,11 @@ app.use(
 
 //Database Connection//
 connectDB();
-
+app.use("/uploads", express.static("uploads"));
+app.use(
+  "/profile_picture",
+  express.static(path.join(__dirname, "profile_picture"))
+);
 //All App Routes..
 app.use("/api/auth", authRoutes);
 app.use("/api", menuRoutes);

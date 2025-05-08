@@ -107,6 +107,7 @@ function EditProfile() {
           <input
             type="file"
             ref={fileInputRef}
+            name="avatar"
             onChange={handleImageChange}
             accept="image/*"
             style={{ display: "none" }}
