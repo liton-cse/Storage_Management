@@ -3,7 +3,7 @@ import { Note, File, Folder, History } from "../models/Storage.js";
 import generateToken from "../utils/generateToken.js";
 import sendEmail from "../utils/sendEmail.js";
 import { oauth2Client } from "../utils/googleClient.js";
-import axios from "axios";
+import path from "path";
 import fs from "fs";
 import {
   validateSignup,
