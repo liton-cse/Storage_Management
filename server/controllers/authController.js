@@ -342,18 +342,14 @@ export const googleAuth = async (req, res) => {
 
     // 1. Exchange code for tokens
     const { tokens } = await oauth2Client.getToken(code);
-
     // 2. Verify ID token
-    const ticket = oauth2Client.verifyIdToken({
+    const ticket = await oauth2Client.verifyIdToken({
       idToken: tokens.id_token,
       audience: process.env.GOOGLE_CLIENT_ID,
     });
-
     const { email, name, picture, sub: googleId } = ticket.getPayload();
-
     // 3. Find or create user
     let user = await User.findOne({ email });
-
     if (!user) {
       user = await User.create({
         name,

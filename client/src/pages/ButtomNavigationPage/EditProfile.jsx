@@ -99,7 +99,7 @@ function EditProfile() {
             )
           ) : (
             // Default image
-            <img src="/default-profile.jpg" alt="Profile" />
+            <img src="/default-profile.png" alt="Profile" />
           )}
           <div className="camera-icon">
             <IoCamera />

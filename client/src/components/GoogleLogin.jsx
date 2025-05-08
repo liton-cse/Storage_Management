@@ -12,7 +12,6 @@ const GoogleLogin = () => {
     onSuccess: async ({ code }) => {
       try {
         const response = await googleLoginFunction(code);
-
         if (!response.data?.token) {
           throw new Error("Authentication failed - no token received");
         }
@@ -28,7 +27,6 @@ const GoogleLogin = () => {
     },
     flow: "auth-code",
     clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-    // ux_mode: "redirect",
     redirect_uri: import.meta.env.VITE_FRONTEND_URL,
     scope: "openid profile email",
   });

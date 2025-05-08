@@ -60,11 +60,12 @@ const Profile = () => {
         <div className="profile-image">
           {profileData?.avatar?.startsWith("https") ? (
             // OAuth providers (Google/Facebook) - has full URL
+
             <img
-              src={profileData.avatar}
+              src={profileData?.avatar}
               alt="profile pic"
               onError={(e) => {
-                e.target.src = "/default-profile.jpg";
+                e.target.src = "/default-profile.png";
               }}
             />
           ) : (
@@ -75,11 +76,11 @@ const Profile = () => {
                   ? profileData.avatar
                       .replace(/^profile_picture[\\/]/, "") // Remove leading folder reference
                       .replace(/\\/g, "/") // Convert backslashes to forward slashes
-                  : "default-profile.jpg"
+                  : "/default-profile.png"
               }`}
               alt="Profile"
               onError={(e) => {
-                e.target.src = "/default-profile.jpg";
+                e.target.src = "/default-profile.png";
               }}
             />
           )}
