@@ -4,8 +4,8 @@ import {
   renameEntity,
   copyEntity,
   deleteEntity,
-  duplicateEntity,
-  shareEntity,
+  generateShareData,
+  shareViaPlatform,
 } from "../controllers/actionController.js";
 import { authenticate } from "../middleware/authMiddleware.js";
 
@@ -20,11 +20,16 @@ router.put(
 router.put("/favourite/:entityType/:entityId", authenticate, toggleFavourite);
 
 // Rename entity route
-router.put("/rename/:entityType/:entityId", authenticate, renameEntity);
+//put.
+router.put(
+  "/rename/:entityType/:entityId/:storedId",
+  authenticate,
+  renameEntity
+);
 
 // POST /api/entities/:entityType/:entityId/copy
 // Required body: { targetFolderId?: string }
-router.post("/copy/:entityType/:entityId", authenticate, copyEntity);
+router.post("/copy/:entityType/:entityId/:storedId", authenticate, copyEntity);
 
 // DELETE /api/entities/:entityType/:entityId
 router.delete(
@@ -33,11 +38,19 @@ router.delete(
   deleteEntity
 );
 
-// POST /api/entities/:entityType/:entityId/duplicate
-router.post("/duplicate/:entityType/:entityId", authenticate, duplicateEntity);
+// for Share data ...
 
-// POST /api/share/:entityType/:entityId
-// Body: { shareMethod?: 'whatsapp'|'telegram'|'messenger', recipientId?: string }
-router.post("/share/:entityType/:entityId", authenticate, shareEntity);
+// Generate share data for an entity
+router.get(
+  "/share/data/:entityType/:entityId",
+  authenticate,
+  generateShareData
+);
 
+// Share via specific platform
+router.post(
+  "/share/platform/:entityType/:entityId",
+  authenticate,
+  shareViaPlatform
+);
 export default router;

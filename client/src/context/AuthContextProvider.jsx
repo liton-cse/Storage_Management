@@ -9,7 +9,7 @@ import {
   resetUserPassword,
 } from "./AuthFunction";
 import { getStorage, recentData, searchItem } from "../context/MenuFunction";
-import { deleteAction } from "../utility/api";
+import { deleteAction, googleAuth } from "../utility/api";
 export const AuthContextProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -62,6 +62,16 @@ export const AuthContextProvider = ({ children }) => {
     setSearchError(null);
   }, []);
 
+  //handle google login....
+  const googleLoginFunction = async (code) => {
+    const response = await googleAuth(code);
+    if (!response) {
+      console.log("login Failed");
+    }
+    setUser(response.data.token);
+    return response;
+  };
+
   // Function to handle login
   const handleLogin = async ({ email, password }) => {
     const loggedInUser = await loginUser({ email, password });
@@ -98,6 +108,7 @@ export const AuthContextProvider = ({ children }) => {
     user,
     handleSignup,
     handleLogin,
+    googleLoginFunction,
     handleLogout,
     sendResetCode,
     verifyUserCode,

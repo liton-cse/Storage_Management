@@ -1,7 +1,7 @@
 import React from "react";
 import "../../styles/ButtomNavigationStyle/DeleteAccountModal.css";
 
-function DeleteAccountModal({ onClose }) {
+function DeleteAccountModal({ onClose, onConfirm }) {
   return (
     <div className="delete-area">
       <div className="delete">
@@ -15,7 +15,7 @@ function DeleteAccountModal({ onClose }) {
           <button className="delete-cancel" onClick={onClose}>
             Cancel
           </button>
-          <button className="delete-confirm" onClick={onClose}>
+          <button className="delete-confirm" onClick={onConfirm}>
             Delete
           </button>
         </div>

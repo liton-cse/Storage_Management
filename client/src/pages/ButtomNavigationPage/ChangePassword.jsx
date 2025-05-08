@@ -1,11 +1,34 @@
 import React, { useState } from "react";
 import "../../styles/ButtomNavigationStyle/ChangePassword.css";
+import { changePasswordFunction } from "../../context/ProfileFunction";
+import { useNavigate } from "react-router-dom";
 function ChangePassword() {
-  const [currentPassword, setCurrentPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const handleSubmit = (e) => {
+  const [password, setPassword] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const response = await changePasswordFunction({
+        currentPassword: password.currentPassword,
+        newPassword: password.newPassword,
+        confirmPassword: password.confirmPassword,
+      });
+      if (response.success) {
+        navigate("/profile");
+        setPassword({
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        });
+      }
+    } catch (error) {
+      console.log("Data pass failed", error);
+    }
   };
   return (
     <div className="change-password-area">
@@ -17,31 +40,37 @@ function ChangePassword() {
           <form onSubmit={handleSubmit}>
             <div className="change-password-input-box">
               <input
-                type="text"
+                type="password"
                 placeholder="Current password"
                 required
                 name="currentPassword"
                 id="currentPassword"
-                value={currentPassword}
-                onChange={(e) => setCurrentPassword(e.target.value)}
+                value={password.currentPassword}
+                onChange={(e) =>
+                  setPassword({ ...password, currentPassword: e.target.value })
+                }
               />
               <input
-                type="text"
+                type="password"
                 name="newPassword"
                 id="newPassword"
-                value={newPassword}
+                value={password.newPassword}
                 required
                 placeholder="New password"
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(e) =>
+                  setPassword({ ...password, newPassword: e.target.value })
+                }
               />
               <input
-                type="text"
+                type="passsword"
                 name="confirmPassword"
                 id="confirmPassword"
-                value={confirmPassword}
+                value={password.confirmPassword}
                 required
                 placeholder="Confirm password"
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) =>
+                  setPassword({ ...password, confirmPassword: e.target.value })
+                }
               />
             </div>
             <div className="change-password-button">

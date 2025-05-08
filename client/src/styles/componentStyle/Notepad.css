@@ -1,0 +1,127 @@
+/* Mobile-First Base Styles */
+.notepad-area {
+    padding: 16px;
+    height: 100vh;
+    background: #f5f5f5;
+    margin: 60px auto;
+  }
+  
+  .notepad {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    height: calc(100vh - 32px);
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .notepad form {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 16px;
+  }
+  
+  .modal-note-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-grow: 1;
+  }
+  
+  .modal-note-title {
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    border-bottom: 1px solid #e0e0e0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    background: transparent;
+  }
+  
+  .modal-note-title:focus {
+    outline: none;
+    border-bottom-color: #6200ee;
+  }
+  
+  .modal-note-text-area {
+    width: 100%;
+    flex-grow: 1;
+    padding: 12px;
+    border: none;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #333;
+    background: transparent;
+    resize: none;
+  }
+  
+  .modal-note-text-area:focus {
+    outline: none;
+  }
+  
+  .notepad button[type="submit"] {
+    align-self: flex-end;
+    padding: 10px 20px;
+    background: #6200ee;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 1.5rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .notepad button[type="submit"]:hover {
+    background: #3700b3;
+  }
+  
+  /* Tablet (min-width: 768px) */
+  @media (min-width: 768px) {
+    .notepad-area {
+      padding: 24px;
+      max-width: 800px;
+      margin: 60px auto;
+
+    }
+  
+    .notepad {
+      height: calc(100vh - 48px);
+      padding: 24px;
+    }
+  
+    .modal-note-title {
+      font-size: 18px;
+      padding: 14px;
+    }
+  
+    .modal-note-text-area {
+      font-size: 14px;
+      padding: 16px;
+    }
+  }
+  
+  /* Desktop (min-width: 1024px) */
+  @media (min-width: 1024px) {
+    .notepad-area {
+      padding: 24px;
+      max-width: 900px;
+    }
+  
+    .notepad {
+      border-radius: 16px;
+      padding: 24px;
+    }
+  
+    .modal-note-title {
+      font-size: 20px;
+    }
+  
+    .notepad button[type="submit"] {
+      padding: 12px 24px;
+      font-size: 16px;
+    }
+  }

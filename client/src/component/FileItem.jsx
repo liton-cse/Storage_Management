@@ -1,5 +1,5 @@
 // FileItem.js
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import fileIcons from "../assets/fileIcons.json";
 import { FcFolder } from "react-icons/fc";
@@ -18,7 +18,8 @@ const iconComponents = {
 
 const FileItem = ({
   file,
-  onFileClick,
+  onClick,
+  onDoubleClick,
   onActionClick,
   activeMenuId,
   setActiveMenuId,
@@ -26,6 +27,9 @@ const FileItem = ({
   buttonRefs,
   showActions = true,
 }) => {
+  const [lastTap, setLastTap] = useState(0);
+  const tapTimeout = useRef(null);
+  const isTouchDevice = useRef(false);
   const getFileIcon = (type) => {
     const iconConfig = fileIcons[type] || fileIcons.folder;
     const IconComponent = iconComponents[iconConfig.component];
@@ -56,31 +60,87 @@ const FileItem = ({
     event.stopPropagation();
     setActiveMenuId(activeMenuId === fileId ? null : fileId);
   };
+  // Detect touch device on component mount
+  useEffect(() => {
+    isTouchDevice.current =
+      "ontouchstart" in window || navigator.maxTouchPoints > 0;
+  }, []);
+
+  const handleInteraction = (e) => {
+    if (isTouchDevice.current) {
+      handleTouch(e);
+    } else {
+      handleClick(e);
+    }
+  };
+
+  const handleTouch = (e) => {
+    const currentTime = new Date().getTime();
+    const tapLength = currentTime - lastTap;
+
+    if (tapTimeout.current) {
+      clearTimeout(tapTimeout.current);
+    }
+
+    if (tapLength < 300 && tapLength > 0) {
+      // Double tap
+      e.preventDefault();
+      onDoubleClick && onDoubleClick();
+      setLastTap(0);
+    } else {
+      // Single tap
+      setLastTap(currentTime);
+      tapTimeout.current = setTimeout(() => {
+        onClick && onClick();
+        setLastTap(0);
+      }, 300);
+    }
+  };
+
+  const handleClick = () => {
+    // For non-touch devices, just handle single click
+    onClick && onClick();
+  };
+
+  // Clean up timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (tapTimeout.current) {
+        clearTimeout(tapTimeout.current);
+      }
+    };
+  }, []);
 
   return (
-    <div className="file-item" onClick={() => onFileClick(file)}>
+    <div
+      className="file-item"
+      onClick={handleInteraction}
+      onDoubleClick={!isTouchDevice.current ? onDoubleClick : undefined}
+    >
       <div className="file-info">
-        {getFileIcon(file.entityType)}
+        {getFileIcon(file?.entityType)}
         <div className="file-meta">
           {/* {file.entityType === "folder" && (
             <span className="file-name">{file.name}</span>
           )} */}
           <span
             className="file-name"
-            title={file.historyId ? file.name || file.title : file.entityName}
+            title={
+              file?.historyId ? file?.name || file?.title : file?.entityName
+            }
           >
-            {file.historyId ? file.name || file.title : file.entityName}
+            {file?.historyId ? file?.name || file?.title : file?.entityName}
           </span>
-          <span className="file-date">{file.formattedDate}</span>
+          <span className="file-date">{file?.formattedDate}</span>
         </div>
       </div>
 
       {showActions && (
         <div className="file-actions" onClick={(e) => e.stopPropagation()}>
           <button
-            ref={(el) => (buttonRefs.current[file._id] = el)}
+            ref={(el) => (buttonRefs.current[file?._id] = el)}
             className="action-button"
-            onClick={(e) => toggleMenu(file._id, e)}
+            onClick={(e) => toggleMenu(file?._id, e)}
             aria-label="File actions"
           >
             ⋮

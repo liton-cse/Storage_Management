@@ -1,0 +1,245 @@
+/* ShareModal.css */
+:root {
+  --primary-color: #4285f4;
+  --secondary-color: #f1f3f4;
+  --text-color: #202124;
+  --border-color: #dadce0;
+  --error-color: #d32f2f;
+  --success-color: #388e3c;
+}
+
+/* Mobile-first styles */
+.share-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.share-modal {
+  background-color: white;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.modal-title {
+  font-size: 20px;
+  margin: 20px 20px 10px;
+  color: var(--text-color);
+}
+
+.loading-spinner {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-color);
+}
+
+.error-message {
+  padding: 10px 20px;
+  margin: 0 20px 10px;
+  border-radius: 4px;
+  background-color: #ffebee;
+  color: var(--error-color);
+}
+
+.error-message.success {
+  background-color: #e8f5e9;
+  color: var(--success-color);
+}
+
+.share-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  margin: 0 20px;
+}
+
+.tab-button {
+  flex: 1;
+  padding: 12px 0;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--text-color);
+}
+
+.tab-button.active {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.tab-content {
+  padding: 20px;
+}
+
+.social-share-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.share-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.share-button:hover {
+  background-color: var(--secondary-color);
+}
+
+.share-button span {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--text-color);
+}
+
+.direct-share-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  color: var(--text-color);
+}
+
+.form-group select,
+.form-group input {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.share-button.primary {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.share-button.primary:disabled {
+  background-color: #b3c6ff;
+  cursor: not-allowed;
+}
+
+.link-share-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.share-url-box {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.share-url-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.copy-button {
+  background-color: var(--secondary-color);
+  border: none;
+  padding: 0 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.share-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.share-meta h3 {
+  font-size: 16px;
+  margin: 0;
+}
+
+.share-meta p {
+  font-size: 14px;
+  margin: 0;
+  color: #5f6368;
+}
+
+.thumbnail-preview {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-top: 8px;
+}
+
+/* Tablet and larger screens */
+@media (min-width: 600px) {
+  .social-share-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .modal-title {
+    font-size: 24px;
+  }
+  
+  .tab-button {
+    font-size: 16px;
+  }
+}
+
+/* Desktop screens */
+@media (min-width: 900px) {
+  .social-share-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}

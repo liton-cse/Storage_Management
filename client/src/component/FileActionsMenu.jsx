@@ -15,12 +15,13 @@ const FileActionsMenu = ({ file, onActionClick, menuStyle, menuRef }) => {
       onClick={(e) => e.stopPropagation()}
     >
       <button
-        className="menu-item"
+        className="menu-item favorite-item"
         onClick={() =>
           onActionClick(
             getActionId(),
             file.entityType,
             getTargetId(),
+            file,
             "favorite"
           )
         }
@@ -28,25 +29,29 @@ const FileActionsMenu = ({ file, onActionClick, menuStyle, menuRef }) => {
         {file.isFavorite ? "Remove Favorite" : "Add Favorite"}
       </button>
       <button
-        className="menu-item"
+        className="menu-item copy-item"
         onClick={() =>
-          onActionClick(file._id, file.entityType, file.entityId, "copy")
+          onActionClick(
+            getActionId(),
+            file.entityType,
+            getTargetId(),
+            file,
+            "copy"
+          )
         }
       >
         Copy
       </button>
       <button
-        className="menu-item"
+        className="menu-item rename-item"
         onClick={() =>
-          onActionClick(file._id, file.entityType, file.entityId, "duplicate")
-        }
-      >
-        Duplicate
-      </button>
-      <button
-        className="menu-item"
-        onClick={() =>
-          onActionClick(file._id, file.entityType, file.entityId, "rename")
+          onActionClick(
+            getActionId(),
+            file.entityType,
+            getTargetId(),
+            file,
+            "rename"
+          )
         }
       >
         Rename
@@ -54,15 +59,27 @@ const FileActionsMenu = ({ file, onActionClick, menuStyle, menuRef }) => {
       <button
         className="menu-item"
         onClick={() =>
-          onActionClick(file._id, file.entityType, file.entityId, "share")
+          onActionClick(
+            getActionId(),
+            file.entityType,
+            getTargetId(),
+            file,
+            "share"
+          )
         }
       >
         Share
       </button>
       <button
-        className="menu-item delete"
+        className="menu-item delete-item"
         onClick={() =>
-          onActionClick(getActionId(), file.entityType, getTargetId(), "delete")
+          onActionClick(
+            getActionId(),
+            file.entityType,
+            getTargetId(),
+            file,
+            "delete"
+          )
         }
       >
         Delete

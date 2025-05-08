@@ -6,13 +6,25 @@ import authRoutes from "./routes/authRoutes.js";
 import menuRoutes from "./routes/menuRoutes.js";
 import actionRoutes from "./routes/actionRoutes.js";
 import navigationButtomRoutes from "./routes/navigationButtomRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 dotenv.config();
 
 // Built in middlware....
 const app = express();
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
-app.use("/Profile_Picture", express.static("Profile_Picture"));
+// Update your static file configuration to:
+app.use(
+  "/profile_picture",
+  express.static(path.join(__dirname, "profile_picture"), {
+    setHeaders: (res) => {
+      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    },
+  })
+);
 // CORS Middleware
 const allowOrigins = [
   "https://storage-management-fronend.onrender.com",
@@ -33,6 +45,8 @@ app.use(
 
 app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
+  res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
+  res.setHeader("Access-Control-Allow-Origin", process.env.GOOGLE_REDIRECT_URI);
   next();
 });
 

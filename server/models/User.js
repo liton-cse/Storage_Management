@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
       message: "Please provide a valid email address",
     },
   },
-  image: {
+  avatar: {
     type: String,
   },
   password: {
@@ -42,8 +42,11 @@ userSchema.pre("save", async function (next) {
 });
 
 // Compare passwords
-userSchema.methods.matchPassword = async function (password) {
-  return await bcrypt.compare(password, this.password);
+userSchema.methods.matchPassword = async function (enteredPassword) {
+  if (!enteredPassword || !this.password) {
+    return false;
+  }
+  return await bcrypt.compare(enteredPassword, this.password);
 };
 
 const User = mongoose.model("User", userSchema);

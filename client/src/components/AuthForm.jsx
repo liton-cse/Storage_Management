@@ -43,7 +43,6 @@ const AuthForm = ({ type }) => {
     try {
       if (type === "login") {
         const response = await handleLogin(formData);
-        console.log(response.loggedInUser);
         if (response.loggedInUser.userData.token) {
           setFormData({
             email: "",

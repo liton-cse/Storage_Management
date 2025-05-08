@@ -106,7 +106,7 @@
     .setting-area {
       padding: 30px;
       padding-bottom: 90px;
-      max-width: 1000px;
+      max-width: 1200px;
       margin: 60px auto;
     }
     
@@ -124,7 +124,7 @@
     }
     
     .setting-action a {
-      padding: 18px 20px;
+      padding: 1rem;
     }
     
     .action-left {
@@ -153,12 +153,12 @@
     }
     
     .setting {
-      max-width: 500px;
+      max-width: 450px;
     }
     
     .settign-heading h1 {
-      font-size: 32px;
-      margin-bottom: 3rem;
+      font-size: 24px;
+      margin-bottom: 2rem;
     }
     
     .setting-action {
@@ -167,6 +167,7 @@
     }
 
     .delete-account {
-      max-width: 500px;
+      max-width: 450px;
+      
     }
   }

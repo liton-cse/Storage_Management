@@ -1,0 +1,70 @@
+/* Mobile-first base styles (inherits background) */
+.rename-container {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  position: relative; /* For absolute positioning of extension */
+}
+
+.rename-input {
+  flex: 1;
+  width: 40%;
+  min-width: 0;
+  padding: 6px 8px;
+  border: none;
+  font-size: 14px;
+  font-family: inherit;
+  color: inherit;
+  margin-left: 2.5rem;
+  padding-right: 0.5rem; /* Ensure space for extension */
+}
+
+/* Extension positioned with calculated spacing */
+.extension-preview {
+  position: absolute;
+  left: calc(100% + 0.25rem); /* 1rem gap after input */
+  font-size: 14px;
+  color: inherit;
+  opacity: 0.7;
+  user-select: none;
+  white-space: nowrap;
+  pointer-events: none; /* Prevent interaction with extension */
+}
+
+.rename-input:focus {
+  outline: none;
+}
+
+/* Tablet (640px and up) */
+@media (min-width: 640px) {
+  .rename-input {
+    padding: 8px 10px;
+    font-size: 15px;
+    padding-right: 0.5rem; /* Maintain space */
+
+  }
+  
+  .extension-preview {
+    font-size: 15px;
+  }
+}
+
+/* Desktop (1024px and up) */
+@media (min-width: 1024px) {
+  .rename-container {
+    width: 25%;
+  }
+  
+  .rename-input {
+    width: 25%;
+    padding: 8px 12px;
+    font-size: 16px;
+    margin-left: 3rem;
+    padding-right: 0.5rem; /* Maintain space */
+  }
+  
+  .extension-preview {
+    font-size: 16px;
+    left: calc(100% + 0.5rem); /* Consistent 1rem gap */
+  }
+}

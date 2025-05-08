@@ -23,8 +23,11 @@ import Support from "../pages/ButtomNavigationPage/Support";
 import TermsAndCondition from "../pages/ButtomNavigationPage/TermsAndCondition";
 import PrivacyPolicy from "../pages/ButtomNavigationPage/PrivacyPolicy";
 import About from "../pages/ButtomNavigationPage/About";
+import NotePad from "../component/Notepad";
+import { useAuth } from "../context/AuthContext";
 
 function AppRouter() {
+  const { user } = useAuth();
   return (
     <div>
       <header>
@@ -33,7 +36,11 @@ function AppRouter() {
       <main>
         <Routes>
           {/* Public Routes */}
-          <Route path="/" element={<Navigate to={"/login"} />} />
+          {user ? (
+            <Route path="/" element={<Home />} />
+          ) : (
+            <Route path="/" element={<Login />} />
+          )}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -169,6 +176,23 @@ function AppRouter() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/notepad"
+            element={
+              <ProtectedRoute>
+                <NotePad />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notes/:id"
+            element={
+              <ProtectedRoute>
+                <NotePad />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/share" element={<ShareButton />} /> */}
           {/* Fallback Route */}
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>

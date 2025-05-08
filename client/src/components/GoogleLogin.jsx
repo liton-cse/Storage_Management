@@ -1,43 +1,45 @@
-// import { useState } from "react";
 import { useGoogleLogin } from "@react-oauth/google";
-import { googleAuth } from "../utility/api.js";
-import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const GoogleLogin = () => {
-  //const [user, setUser] = useState(null);
-  const navigate = useNavigate();
-  const responseGoogle = async (authResult) => {
-    try {
-      if (authResult["code"]) {
-        const result = await googleAuth(authResult.code);
-        const { email, name } = result.data.user;
-        const token = result.data.token;
-        const obj = { email, name, token };
-        localStorage.setItem("user-info", JSON.stringify(obj));
-        navigate("/home");
-      } else {
-        console.log(authResult);
-        throw new Error(authResult);
-      }
-    } catch (e) {
-      console.log("Error while Google Login...", e);
-    }
+  const { googleLoginFunction } = useAuth();
+  // Get the correct redirect URI based on environment
+  const getRedirectUri = () => {
+    return window.location.origin; // Dynamically gets current origin (localhost or production)
   };
 
   const googleLogin = useGoogleLogin({
-    onSuccess: responseGoogle,
-    onError: responseGoogle,
-    flow: "auth-code",
-  });
+    onSuccess: async ({ code }) => {
+      try {
+        const response = await googleLoginFunction(code);
 
+        if (!response.data?.token) {
+          throw new Error("Authentication failed - no token received");
+        }
+        // email: response.data.user.email,
+        // name: response.data.user.name,
+        // picture: response.data.user.picture,
+        localStorage.setItem("token", response.data.token);
+
+        window.location.href = "/home";
+      } catch (error) {
+        console.error("Google login error:", error);
+      }
+    },
+    onError: (error) => {
+      console.error("Google OAuth error:", error);
+    },
+    flow: "auth-code",
+    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+    // ux_mode: "redirect",
+    redirect_uri: getRedirectUri(),
+    scope: "openid profile email",
+  });
   return (
-    <>
-      <div>
-        <button onClick={googleLogin} className="google-signin-link">
-          <img src="Google_logo.png" alt="logo" /> Sign in with Google
-        </button>
-      </div>
-    </>
+    <button onClick={googleLogin} className="google-signin-link">
+      <img src="Google_logo.png" alt="Google logo" />
+      Sign in with Google
+    </button>
   );
 };
 

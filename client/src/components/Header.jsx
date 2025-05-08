@@ -34,7 +34,7 @@ const Header = () => {
   // Handle Logout
   const handleLogoutClick = () => {
     handleLogout();
-    navigate("/login");
+    navigate("/");
   };
 
   // Close menu when clicking outside

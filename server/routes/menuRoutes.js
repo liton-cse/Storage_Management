@@ -13,6 +13,7 @@ import {
   getImages,
   getPdf,
   searchItems,
+  getNotesById,
 } from "../controllers/menuController.js";
 import { upload } from "../utils/multerConfiguration.js";
 import { authenticate } from "../middleware/authMiddleware.js";
@@ -57,7 +58,8 @@ router.get("/pdf", authenticate, getPdf);
 // Note Routes
 router.post("/notes", authenticate, createNote);
 router.get("/notes", authenticate, getNotes);
-router.put("/note/:id", authenticate, updateNote);
+router.get(`/notes/:id`, authenticate, getNotesById);
+router.put("/notes/:id", authenticate, updateNote);
 
 // Storage Stats
 router.get("/storage/stats", authenticate, getStorageStats);

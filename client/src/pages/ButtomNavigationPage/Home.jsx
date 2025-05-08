@@ -7,9 +7,11 @@ import { BsFileEarmarkPdfFill } from "react-icons/bs";
 import RecentFilesList from "../../components/Recent";
 import { useAuth } from "../../context/AuthContext";
 import Button from "../../components/Button";
+import { createFolderFunction, uploadFile } from "../../context/MenuFunction";
 const Home = () => {
   const [items, setItems] = useState([]);
   const { getStorage } = useAuth();
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -23,7 +25,40 @@ const Home = () => {
       }
     };
     fetchItems();
-  }, [getStorage]);
+  }, [getStorage, refreshTrigger]);
+
+  //Handling a file Uploading
+  const handleCreateFolder = async (folderName) => {
+    try {
+      const response = await createFolderFunction(folderName);
+      if (response.success) {
+        setRefreshTrigger((prev) => !prev);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCreateNote = async () => {};
+
+  const handleFileUpload = async (files) => {
+    try {
+      // 1. Create FormData object
+      const formData = new FormData();
+
+      // 2. Append each file to FormData
+      Array.from(files).forEach((file) => {
+        formData.append("files", file); // 'files' should match your backend expectation
+      });
+      const response = await uploadFile(formData);
+      if (response.success) {
+        setRefreshTrigger((prev) => !prev);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="home-area">
       {items && (
@@ -76,10 +111,14 @@ const Home = () => {
       )}
       {/* Recent File Folder notes,image pdf show */}
       <div className="recent-area">
-        <RecentFilesList />
+        <RecentFilesList data={refreshTrigger} />
       </div>
       <div>
-        <Button />
+        <Button
+          onFolderCreate={handleCreateFolder}
+          onNoteCreate={handleCreateNote}
+          onFileUpload={handleFileUpload}
+        />
       </div>
     </div>
   );

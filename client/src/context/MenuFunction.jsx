@@ -1,3 +1,4 @@
+import { MdDescription } from "react-icons/md";
 import {
   getFilesInFolder,
   getFolder,
@@ -8,6 +9,11 @@ import {
   getFavorite,
   getSearchItem,
   getNote,
+  createFolder,
+  createNoteApi,
+  updateNoteApi,
+  getNoteApi,
+  uploadFileApi,
 } from "../utility/api";
 //get storage for home...
 export const getStorage = async () => {
@@ -154,6 +160,93 @@ export const searchItem = async (query, lastpath) => {
   } catch (error) {
     return {
       success: true,
+      message: error?.response?.data?.message,
+    };
+  }
+};
+
+// creating Folder ....
+
+export const createFolderFunction = async (name) => {
+  try {
+    const response = await createFolder(name);
+    return {
+      success: true,
+      message: response.data,
+    };
+  } catch (error) {
+    console.log("Folder Does Not Create", error);
+    return {
+      success: false,
+      message: error?.response?.data?.message,
+    };
+  }
+};
+// create note make a function ..
+
+export const createNote = async (title, description) => {
+  try {
+    const response = await createNoteApi(title, description);
+    return {
+      success: true,
+      message: response.data,
+    };
+  } catch (error) {
+    console.log("Folder Does Not Create", error);
+    return {
+      success: false,
+      message: error?.response?.data?.message,
+    };
+  }
+};
+//update the note function ....
+export const updateNote = async (id, title, description) => {
+  try {
+    const response = await updateNoteApi(id, title, description);
+    return {
+      success: true,
+      message: response.data,
+    };
+  } catch (error) {
+    console.log("Folder Does Not update", error);
+    return {
+      success: false,
+      message: error?.response?.data?.message,
+    };
+  }
+};
+
+//get note by id  from data base
+
+export const getNoteById = async (id) => {
+  try {
+    const response = await getNoteApi(id);
+    return {
+      success: true,
+      message: response.data,
+    };
+  } catch (error) {
+    console.log("Folder Does Not update", error);
+    return {
+      success: false,
+      message: error?.response?.data?.message,
+    };
+  }
+};
+
+//upload file from front end to backend...
+
+export const uploadFile = async (formData) => {
+  try {
+    const response = await uploadFileApi(formData);
+    return {
+      success: true,
+      message: response.data,
+    };
+  } catch (error) {
+    console.log("Folder Does Not upload", error);
+    return {
+      success: false,
       message: error?.response?.data?.message,
     };
   }

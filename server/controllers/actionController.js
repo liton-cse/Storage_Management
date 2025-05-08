@@ -1,5 +1,9 @@
-import { Folder, File, Note, History } from "../models/Storage.js";
-import { performAction, getModelByType } from "../utils/performAction.js";
+import { Folder, File, Note, History, ShareLog } from "../models/Storage.js";
+import {
+  performAction,
+  getModelByType,
+  performRenameAction,
+} from "../utils/performAction.js";
 import fs from "fs";
 import path from "path";
 
@@ -30,9 +34,9 @@ export const toggleFavourite = async (req, res) => {
 
 //@ Rename action - Refactored to use performAction
 //@method:put
-//@end-point:api/rename/:entityType/:entityId.
+//@end-point:api/rename/:entityType/:entityId/:storedId
 export const renameEntity = async (req, res) => {
-  const { entityType, entityId } = req.params;
+  const { entityType, entityId, storedId } = req.params;
   const { newName } = req.body;
 
   // Validate newName exists and is not empty
@@ -51,14 +55,13 @@ export const renameEntity = async (req, res) => {
     userId: req.user._id,
     type: "rename",
     oldName: "", // Will be set in preAction
-    performedBy: req.user._id,
     timestamp: new Date(),
   };
 
   const preAction = async (entity) => {
     try {
       // Safely get current name with fallbacks
-      const currentName = entity.name || entity.title || entity.filename;
+      const currentName = entity.name || entity.title || entity.entityName;
       if (!currentName) {
         throw new Error("No existing name field found on this entity");
       }
@@ -97,17 +100,25 @@ export const renameEntity = async (req, res) => {
     }
   };
 
-  return performAction(model, entityId, actionData, res, preAction);
+  return performRenameAction(
+    model,
+    entityId,
+    storedId,
+    actionData,
+    res,
+    preAction
+  );
 };
 
 //@ Copy action - Kept as standalone due to complex logic
 //@method: post
-//@endpoint:api/copy/:entityType/:entityId
+//@endpoint:api/copy/:entityType/:entityId/:storedId
 
 export const copyEntity = async (req, res) => {
   try {
-    const { entityType, entityId } = req.params;
-    const { targetFolderId } = req.body;
+    const { type } = req.body;
+    const { entityType, entityId, storedId } = req.params;
+    console.log(entityType, entityId, storedId, type);
 
     // Validate entity type
     const model = getModelByType(entityType);
@@ -116,7 +127,7 @@ export const copyEntity = async (req, res) => {
     }
 
     // Find the original entity
-    const entity = await model.findById(entityId);
+    const entity = await model.findById(storedId);
     if (!entity) {
       return res.status(404).json({ message: "Entity not found" });
     }
@@ -147,27 +158,27 @@ export const copyEntity = async (req, res) => {
           name: `${entity.name} (Copy)`,
           path: newPath,
           size: entity.size,
-          type: entity.type,
-          folder: targetFolderId || entity.folder,
-          owner: req.user._id,
-          createdAt: new Date(),
+          entityType: type,
+          isFavorite: entity.isFavorite,
+          userId: req.user._id,
           actions: [],
         });
-
         await copy.save();
-
-        // Log action on original
-        const actionData = {
+        const history = new History({
           userId: req.user._id,
-          type: "copy",
-          performedBy: req.user._id,
-          timestamp: new Date(),
-          sourceId: entityId,
-          targetLocation: targetFolderId || entity.folder,
-          copyId: copy._id,
-        };
-        entity.actions.push(actionData);
-        await entity.save();
+          action: "copy",
+          path: entity.path,
+          entityName: `${entity.name} (Copy)`,
+          entityType: type,
+          isFavorite: entity.isFavorite,
+          entityId: copy._id,
+          details: { fileName: `${entity.name} (Copy)`, fileType: type },
+        });
+        await history.save();
+
+        // Update the file with the history ID
+        copy.historyId = history._id;
+        await copy.save();
 
         return res.status(201).json({
           success: true,
@@ -181,52 +192,82 @@ export const copyEntity = async (req, res) => {
           error: fileErr.message,
         });
       }
-    }
+    } else if (entityType === "folder") {
+      try {
+        // Create database record
+        const copy = new Folder({
+          name: `${entity.name} (Copy)`,
+          userId: req.user._id, // Associate with authenticated user
+          isFavorite: entity.isFavorite,
+        });
 
-    // Handle folders and notes
-    try {
-      const copy = new model({
-        ...entity.toObject(),
-        _id: undefined,
-        name: `${entity.name} (Copy)`,
-        title: entityType === "note" ? `${entity.title} (Copy)` : undefined,
-        isFavorite: false,
-        createdAt: new Date(),
-        parentFolder:
-          entityType === "folder"
-            ? targetFolderId || entity.parentFolder
-            : undefined,
-        actions: [],
-      });
+        const history = new History({
+          userId: req.user._id,
+          action: "copy",
+          entityName: `${entity.name} (Copy)`,
+          entityId: copy._id,
+          isFavorite: entity.isFavorite,
+          entityType: entityType,
+          details: { folderName: `${entity.name} (Copy)` },
+        });
+        await history.save();
+        copy.historyId = history._id;
+        await copy.save();
 
-      await copy.save();
+        return res.status(201).json({
+          success: true,
+          message: "Folder copied successfully",
+          copy,
+        });
+      } catch (folderErr) {
+        console.error("Folder copy error:", folderErr);
+        return res.status(500).json({
+          message: "Error copying folder",
+          error: folderErr.message,
+        });
+      }
+    } else if (entityType === "note") {
+      try {
+        // Implement note copying logic here
+        // Example:
+        const copy = new Note({
+          title: `${entity.title} (Copy)`,
+          description: entity.description,
+          userId: req.user._id,
+          isFavorite: entity.isFavorite,
+        });
+        await copy.save();
 
-      // Log action on original
-      const actionData = {
-        userId: req.user._id,
-        type: "copy",
-        performedBy: req.user._id,
-        timestamp: new Date(),
-        sourceId: entityId,
-        targetLocation:
-          targetFolderId ||
-          (entityType === "folder" ? entity.parentFolder : null),
-        copyId: copy._id,
-      };
-      entity.actions.push(actionData);
-      await entity.save();
+        const history = new History({
+          userId: req.user._id,
+          action: "copy",
+          entityName: `${entity.title} (Copy)`,
+          entityId: copy._id,
+          entityType: entityType,
+          isFavorite: entity.isFavorite,
+          details: {
+            noteTitle: `${entity.title} (Copy)`,
+            noteDescription: entity.description,
+          },
+        });
+        await history.save();
+        copy.historyId = history._id;
+        await copy.save();
 
-      return res.status(201).json({
-        success: true,
-        message: `${entityType} copied successfully`,
-        copy,
-      });
-    } catch (dbErr) {
-      console.error("Database copy error:", dbErr);
-      return res.status(500).json({
-        message: `Error copying ${entityType}`,
-        error: dbErr.message,
-      });
+        return res.status(201).json({
+          success: true,
+          message: "Note copied successfully",
+          copy,
+        });
+      } catch (noteErr) {
+        console.error("Note copy error:", noteErr);
+        return res.status(500).json({
+          message: "Error copying note",
+          error: noteErr.message,
+        });
+      }
+    } else {
+      return res.status(400).json({ message: "Unsupported entity type" });
     }
   } catch (err) {
     console.error("Error in copyEntity:", err);
@@ -298,121 +339,20 @@ export const deleteEntity = async (req, res) => {
   }
 };
 
-//@ Duplicate action - Kept as standalone due to complex logic
-//@method:post
-//@end-point: api/duplicate/:entityType/:entityId
-
-export const duplicateEntity = async (req, res) => {
-  try {
-    const { entityType, entityId } = req.params;
-
-    // Validate entity type
-    const model = getModelByType(entityType);
-    if (!model) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid entity type",
-      });
-    }
-
-    // Find the original entity
-    const entity = await model.findById(entityId);
-    if (!entity) {
-      return res.status(404).json({
-        success: false,
-        message: "Entity not found",
-      });
-    }
-
-    let duplicate;
-
-    // Handle file duplication
-    if (entityType === "file") {
-      try {
-        const ext = path.extname(entity.path);
-        const baseName = path.basename(entity.path, ext);
-
-        // Generate unique filename
-        let counter = 1;
-        let newFileName = `${baseName}_copy${ext}`;
-        let newPath = path.join(path.dirname(entity.path), newFileName);
-
-        while (fs.existsSync(newPath)) {
-          newFileName = `${baseName}_copy_${counter}${ext}`;
-          newPath = path.join(path.dirname(entity.path), newFileName);
-          counter++;
-        }
-
-        // Create physical copy
-        fs.copyFileSync(entity.path, newPath);
-
-        duplicate = new File({
-          userId: req.user._id,
-          name: `${entity.name}_copy${counter > 1 ? `_${counter - 1}` : ""}`,
-          path: newPath,
-          size: entity.size,
-          type: entity.type,
-          folder: entity.folder,
-          createdAt: new Date(),
-          isFavorite: false,
-          actions: [],
-        });
-      } catch (fileErr) {
-        console.error("File duplication error:", fileErr);
-        return res.status(500).json({
-          success: false,
-          message: "Error creating file copy",
-          error: fileErr.message,
-        });
-      }
-    }
-    // Handle folders and notes
-    else {
-      duplicate = new model({
-        ...entity.toObject(),
-        _id: undefined,
-        name: `${entity.name}_copy`,
-        title: entityType === "note" ? `${entity.title}_copy` : undefined,
-        isFavorite: false,
-        createdAt: new Date(),
-        actions: [],
-      });
-    }
-
-    // Save the duplicate
-    await duplicate.save();
-
-    // Log action on original
-    entity.actions.push({
-      type: "duplicate",
-      performedBy: req.user._id,
-      timestamp: new Date(),
-      duplicateId: duplicate._id,
-    });
-    await entity.save();
-
-    return res.status(201).json({
-      success: true,
-      message: `${entityType} duplicated successfully`,
-      duplicate,
-    });
-  } catch (err) {
-    console.error("Error in duplicateEntity:", err);
-    return res.status(500).json({
-      success: false,
-      message: "Server error during duplication",
-      error: err.message,
-    });
-  }
+// Share action - Kept as standalone due to social media integration
+const validatePhoneNumber = (phone) => {
+  return phone.replace(/[^\d+]/g, "");
 };
 
-// Share action - Kept as standalone due to social media integration
-export const shareEntity = async (req, res) => {
+const validateTelegramId = (id) => {
+  return id.replace(/[^\w@]/g, "");
+};
+
+export const generateShareData = async (req, res) => {
   try {
     const { entityType, entityId } = req.params;
-    const { shareMethod, recipientId } = req.body;
+    const userId = req.user._id;
 
-    // Validate entity type
     const model = getModelByType(entityType);
     if (!model) {
       return res.status(400).json({
@@ -421,7 +361,6 @@ export const shareEntity = async (req, res) => {
       });
     }
 
-    // Find the entity
     const entity = await model.findById(entityId);
     if (!entity) {
       return res.status(404).json({
@@ -430,96 +369,176 @@ export const shareEntity = async (req, res) => {
       });
     }
 
-    // Generate shareable link
-    const baseUrl = process.env.APP_BASE_URL || "https://storage-management-backend.onrender.com";
-    let sharePath, message;
+    if (!entity.userId.equals(userId)) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized access",
+      });
+    }
+
+    const baseUrl =
+      process.env.APP_BASE_URL ||
+      "https://storage-management-backend.onrender.com";
+    let sharePath, title, description;
 
     switch (entityType) {
       case "file":
         sharePath = `/files/${entity._id}`;
-        message = `Check out this file: ${entity.name}`;
+        title = `Check out this file: ${entity.name}`;
+        description = `A file shared with you from ${req.user.name}`;
+        break;
+      case "history":
+        sharePath = `/history/${entity._id}`;
+        title = `Check out this file: ${entity.entityName}`;
+        description = `A file shared with you from ${req.user.name}`;
         break;
       case "note":
         sharePath = `/notes/${entity._id}`;
-        message = `Check out this note: ${entity.title}`;
+        title = `Check out this note: ${entity.title}`;
+        description =
+          entity.description.substring(0, 100) +
+          (entity.description.length > 100 ? "..." : "");
         break;
       default:
         return res.status(400).json({
           success: false,
-          message: "This entity type cannot be shared externally",
+          message: "Unsupported entity type",
         });
     }
 
     const shareUrl = `${baseUrl}${sharePath}`;
-    const encodedMessage = encodeURIComponent(message);
-    const encodedUrl = encodeURIComponent(shareUrl);
 
-    // Platform-specific share URLs
-    const platformUrls = {
-      whatsapp: {
-        general: `https://wa.me/?text=${encodedMessage}%20${encodedUrl}`,
-        specific: recipientId
-          ? `https://wa.me/${recipientId}?text=${encodedMessage}%20${encodedUrl}`
-          : null,
-      },
-      telegram: {
-        general: `https://t.me/share/url?url=${encodedUrl}&text=${encodedMessage}`,
-        specific: recipientId
-          ? `https://t.me/share/url?url=${encodedUrl}&text=${encodedMessage}&to=${recipientId}`
-          : null,
-      },
-      messenger: {
-        general: `https://www.facebook.com/dialog/send?link=${encodedUrl}&app_id=${process.env.FB_APP_ID}&redirect_uri=${baseUrl}`,
-        specific: recipientId
-          ? `https://m.me/${recipientId}?text=${encodedMessage}%20${encodedUrl}`
-          : null,
-      },
-    };
-
-    // Handle the share action
-    if (shareMethod) {
-      const platform = platformUrls[shareMethod];
-      if (!platform) {
-        return res.status(400).json({
-          success: false,
-          message: "Unsupported share method",
-          supportedMethods: Object.keys(platformUrls),
-        });
-      }
-
-      // Return the appropriate URL based on whether recipient is specified
-      const shareLink = recipientId ? platform.specific : platform.general;
-
-      return res.status(200).json({
-        success: true,
-        message: "Share link generated",
-        action: "open_external", // Frontend should handle opening this URL
-        shareLink,
-        entity: {
-          id: entity._id,
-          name: entity.name || entity.title,
-          type: entityType,
-        },
-      });
-    }
-
-    // If no share method specified, just return the basic share URL
-    return res.status(200).json({
+    res.status(200).json({
       success: true,
-      message: "Share URL generated",
-      shareUrl,
-      entity: {
-        id: entity._id,
-        name: entity.name || entity.title,
-        type: entityType,
+      data: {
+        url: shareUrl,
+        title,
+        description,
+        entityType,
+        entityId: entity._id,
+        entityName: entity.name || entity.title || entity.entityName,
+        thumbnail: entityType === "file" ? entity.thumbnailUrl : null,
       },
     });
   } catch (err) {
-    console.error("Error sharing entity:", err);
-    return res.status(500).json({
+    console.error("Error generating share data:", err);
+    res.status(500).json({
       success: false,
-      message: "Failed to generate share link",
-      error: err ? err.message : undefined,
+      message: "Internal server error",
+    });
+  }
+};
+
+export const shareViaPlatform = async (req, res) => {
+  try {
+    const { entityType, entityId } = req.params;
+    const { platform, recipient } = req.body;
+    const userId = req.user._id;
+
+    const model = getModelByType(entityType);
+    if (!model) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid entity type",
+      });
+    }
+
+    const entity = await model.findById(entityId);
+    if (!entity) {
+      return res.status(404).json({
+        success: false,
+        message: "Entity not found",
+      });
+    }
+
+    if (!entity.userId.equals(userId)) {
+      return res.status(403).json({
+        success: false,
+        message: "Unauthorized access",
+      });
+    }
+
+    const baseUrl =
+      process.env.APP_BASE_URL ||
+      "https://storage-management-backend.onrender.com";
+    const sharePath = `/${entityType}s/${entity._id}`;
+    const shareUrl = `${baseUrl}${sharePath}`;
+    const title = `Check out this ${entityType}: ${
+      entity.name || entity.title || entity.entityName
+    }`;
+
+    let shareLink;
+    switch (platform) {
+      case "whatsapp":
+        const phone = recipient ? validatePhoneNumber(recipient) : "";
+        shareLink = phone
+          ? `https://wa.me/${phone}?text=${encodeURIComponent(
+              title
+            )}%20${encodeURIComponent(shareUrl)}`
+          : `https://wa.me/?text=${encodeURIComponent(
+              title
+            )}%20${encodeURIComponent(shareUrl)}`;
+        break;
+      case "telegram":
+        const tgUser = recipient ? validateTelegramId(recipient) : "";
+        shareLink = tgUser
+          ? `https://t.me/share/url?url=${encodeURIComponent(
+              shareUrl
+            )}&text=${encodeURIComponent(title)}&to=${tgUser}`
+          : `https://t.me/share/url?url=${encodeURIComponent(
+              shareUrl
+            )}&text=${encodeURIComponent(title)}`;
+        break;
+      case "facebook":
+        shareLink = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+          shareUrl
+        )}`;
+        break;
+      case "messenger":
+        shareLink = `fb-messenger://share/?link=${encodeURIComponent(
+          shareUrl
+        )}`;
+        break;
+      case "twitter":
+        shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+          shareUrl
+        )}&text=${encodeURIComponent(title)}`;
+        break;
+      case "email":
+        shareLink = `mailto:${recipient || ""}?subject=${encodeURIComponent(
+          title
+        )}&body=${encodeURIComponent(`${title}\n\n${shareUrl}`)}`;
+        break;
+      default:
+        return res.status(400).json({
+          success: false,
+          message: "Unsupported platform",
+        });
+    }
+
+    // Log the share action
+    await ShareLog.create({
+      entityType,
+      entityId: entity._id,
+      sharedBy: userId,
+      platform,
+      recipient,
+      timestamp: new Date(),
+    });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        shareLink,
+        platform,
+        requiresExternal: !["facebook", "messenger"].includes(platform),
+      },
+    });
+  } catch (err) {
+    console.error("Error sharing via platform:", err);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
     });
   }
 };

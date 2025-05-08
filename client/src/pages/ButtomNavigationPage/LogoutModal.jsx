@@ -1,7 +1,7 @@
 import React from "react";
 import "../../styles/ButtomNavigationStyle/LogoutModal.css";
 
-function LogoutModal({ onClose }) {
+function LogoutModal({ onClose, onConfirm }) {
   return (
     <div className="logout-area">
       <div className="logout">
@@ -15,7 +15,7 @@ function LogoutModal({ onClose }) {
           <button className="logout-cancel" onClick={onClose}>
             Cancel
           </button>
-          <button className="logout-confirm" onClick={onClose}>
+          <button className="logout-confirm" onClick={onConfirm}>
             Logout
           </button>
         </div>

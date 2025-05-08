@@ -1,18 +1,12 @@
-import { google } from "googleapis";
+import { OAuth2Client } from "google-auth-library";
 import dotenv from "dotenv";
 dotenv.config();
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const GOOGLE_REDIRECT_URI = process.env.GOOGLE_REDIRECT_URI;
 
-export const oauth2Client = new google.auth.OAuth2(
+export const oauth2Client = new OAuth2Client(
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
-  "postmessage"
+  GOOGLE_REDIRECT_URI
 );
-
-// import { OAuth2Client } from "google-auth-library";
-// export const oauth2Client = new OAuth2Client(
-//   process.env.GOOGLE_CLIENT_ID,
-//   process.env.GOOGLE_CLIENT_SECRET,
-//   "http://localhost:5000/api/auth/google" // Redirect URI
-// );

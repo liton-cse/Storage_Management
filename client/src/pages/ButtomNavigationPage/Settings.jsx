@@ -8,8 +8,13 @@ import { AiFillInfoCircle } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
 import "../../styles/ButtomNavigationStyle/Setting.css";
 import DeleteAccountModal from "./DeleteAccountModal";
+import { deleteProfileFunction } from "../../context/ProfileFunction";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 function Setting() {
+  const { handleLogout } = useAuth();
+  const navigate = useNavigate();
   const [showDeleteModal, setShowLogoutModal] = useState(false);
   const handleDeleteAccount = (e) => {
     e.preventDefault();
@@ -17,6 +22,19 @@ function Setting() {
   };
   const closeModal = () => {
     setShowLogoutModal(false);
+  };
+  const confirmDelete = async () => {
+    try {
+      const response = await deleteProfileFunction();
+      if (response.success) {
+        await handleLogout();
+        navigate(`/`);
+      }
+    } catch (error) {
+      console.log("delete Account Failed", error);
+    } finally {
+      closeModal();
+    }
   };
 
   return (
@@ -77,7 +95,9 @@ function Setting() {
             <span>Delete Account</span>
           </button>
         </div>
-        {showDeleteModal && <DeleteAccountModal onClose={closeModal} />}
+        {showDeleteModal && (
+          <DeleteAccountModal onClose={closeModal} onConfirm={confirmDelete} />
+        )}
       </div>
     </div>
   );

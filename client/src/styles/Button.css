@@ -89,12 +89,116 @@
   .plus-btn__file-input {
     display: none;
   }
+  .floating-button__file-input{
+    display: none;
+  }
+
+  .modal-folder-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 14px; /* Comfortable reading on mobile */
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+    transition: all 0.2s ease;
+    box-sizing: border-box; 
+  }
+  
+  /* Focus State (consistent across devices) */
+  .modal-folder-input:focus {
+    outline: none;
+    border-color: #6200ee;
+    box-shadow: 
+      inset 0 1px 2px rgba(0, 0, 0, 0.05),
+      0 0 0 3px rgba(98, 0, 238, 0.1);
+  }
+  
+  /* Placeholder Style */
+  .modal-folder-input::placeholder {
+    color: #999;
+    opacity: 1; /* Firefox fix */
+  }
+
+  /* Mobile-First Base Styles */
+.modal-note-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Space between title and textarea */
+}
+
+.modal-note-title {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #fff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.modal-note-text-area {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+  background-color: #fff;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+  resize: vertical;
+  min-height: 120px; /* Minimum height for mobile */
+  box-sizing: border-box;
+}
+
+/* Focus States */
+.modal-note-title:focus,
+.modal-note-text-area:focus {
+  outline: none;
+  border-color: #6200ee;
+  box-shadow: 
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    0 0 0 3px rgba(98, 0, 238, 0.1);
+}
+
+/* Placeholder Styles */
+.modal-note-title::placeholder,
+.modal-note-text-area::placeholder {
+  color: #999;
+  opacity: 1;
+}
+  
   
   /* Hide menu completely on desktop */
   @media (min-width: 768px) {    
     .plus-btn__trigger {
       width: 4rem;
       height: 4rem;
+    }
+    .modal-folder-input {
+      padding: 12px 14px; /* Slightly taller */
+      font-size: 15px; /* Optimized for tablet */
+    }
+    .modal-note-area {
+      gap: 20px;
+    }
+    
+    .modal-note-title,
+    .modal-note-text-area {
+      padding: 12px 14px;
+      font-size: 15px;
+    }
+    
+    .modal-note-text-area {
+      min-height: 150px;
     }
   }
 
@@ -103,5 +207,29 @@
     .plus-btn {
         right: 0.5rem;
         bottom:0.5rem;
-    }  
+    } 
+    .modal-folder-input {
+      padding: 12px 14px;
+      font-size: 16px;
+      border-radius: 8px;
+    }
+    
+    .modal-folder-input:hover {
+      border-color: #b3b3b3; /* Visual feedback */
+    } 
+
+    .modal-note-title,
+    .modal-note-text-area {
+      padding: 12px 14px;
+      font-size: 16px;
+    }
+    
+    .modal-note-text-area {
+      min-height: 180px;
+    }
+    
+    .modal-note-title:hover,
+    .modal-note-text-area:hover {
+      border-color: #b3b3b3;
+    }
   }

@@ -16,12 +16,6 @@ const ActionSchema = new mongoose.Schema({
   },
   oldName: String, // For rename actions
   sourceId: mongoose.Schema.Types.ObjectId, // For copy/duplicate actions
-  sharedWith: [
-    {
-      userId: mongoose.Schema.Types.ObjectId,
-      permission: { type: String, enum: ["view", "edit"] },
-    },
-  ],
   timestamp: { type: Date, default: Date.now },
 });
 
@@ -116,6 +110,8 @@ const HistorySchema = new mongoose.Schema({
   },
   entityName: { type: String },
   isFavorite: { type: Boolean, default: false },
+  title: String,
+  description: String,
   entityId: mongoose.Schema.Types.ObjectId,
   action: String,
   details: mongoose.Schema.Types.Mixed,
@@ -123,3 +119,81 @@ const HistorySchema = new mongoose.Schema({
 });
 
 export const History = mongoose.model("History", HistorySchema);
+
+//Sharelog...
+
+const shareLogSchema = new mongoose.Schema(
+  {
+    entityType: {
+      type: String,
+      required: true,
+      enum: ["file", "note"],
+    },
+    entityId: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      index: true,
+    },
+    sharedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    platform: {
+      type: String,
+      required: true,
+      enum: [
+        "whatsapp",
+        "telegram",
+        "facebook",
+        "messenger",
+        "twitter",
+        "email",
+        "link",
+      ],
+    },
+    recipient: {
+      type: String,
+      default: null,
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now,
+    },
+    metadata: {
+      type: mongoose.Schema.Types.Mixed,
+      default: {},
+    },
+  },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
+);
+
+// Indexes for better query performance
+shareLogSchema.index({ entityType: 1, entityId: 1 });
+shareLogSchema.index({ sharedBy: 1 });
+shareLogSchema.index({ platform: 1 });
+shareLogSchema.index({ timestamp: -1 });
+
+// Virtual population to access the shared entity
+shareLogSchema.virtual("entity", {
+  ref: function () {
+    return this.entityType === "file" ? "File" : "Note";
+  },
+  localField: "entityId",
+  foreignField: "_id",
+  justOne: true,
+});
+
+// Virtual population for the user who shared
+shareLogSchema.virtual("sharer", {
+  ref: "User",
+  localField: "sharedBy",
+  foreignField: "_id",
+  justOne: true,
+});
+
+export const ShareLog = mongoose.model("ShareLog", shareLogSchema);

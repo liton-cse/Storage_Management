@@ -10,6 +10,9 @@ import { formatDate } from "../utils/dateFormatter.js";
 export const createFolder = async (req, res) => {
   try {
     const { name } = req.body;
+    if (!name) {
+      return res.status(400).json({ message: "Name is required" });
+    }
     const folder = new Folder({
       name,
       userId: req.user._id, // Associate with authenticated user
@@ -124,10 +127,10 @@ export const uploadFile = async (req, res) => {
       newFile.historyId = history._id;
       await newFile.save();
 
-      savedFiles.push(newFile);
+      // savedFiles.push(newFile);
     }
 
-    res.status(201).json({ savedFiles });
+    res.status(201).json({ message: "File Upload sucessfully" });
   } catch (err) {
     console.error("Error uploading file:", err);
     res.status(500).json({ message: "Server error" });
@@ -234,6 +237,10 @@ export const getFilesById = async (req, res) => {
 // FileController End
 
 // NoteController Start
+
+//@note controller Business logic to create the note.
+//@method:post
+//@end-point: api/notes
 export const createNote = async (req, res) => {
   try {
     const { title, description } = req.body;
@@ -268,6 +275,9 @@ export const createNote = async (req, res) => {
   }
 };
 
+//@note controller Business logic to get the note.
+//@method: get
+//@end-point: api/notes
 export const getNotes = async (req, res) => {
   try {
     const notes = await Note.find({ userId: req.user._id })
@@ -283,12 +293,28 @@ export const getNotes = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+//@note controller Business logic to get the note.
+//@method: get
+//@end-point: api/notes/:id
+export const getNotesById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const notes = await Note.find({ userId: req.user._id, _id: id });
+    res.status(200).json(notes);
+  } catch (err) {
+    console.error("Error fetching notes:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
-// Update Note
+//@note controller Business logic to update the note.
+//@method: put
+//@end-point: api/notes/:id
 export const updateNote = async (req, res) => {
   try {
-    const { title, description, previousTitle } = req.body;
-
+    const { title, description } = req.body;
+    const { id } = req.params;
+    console.log(id, title, description);
     // Validate required fields
     if (!title || !description) {
       return res
@@ -298,7 +324,7 @@ export const updateNote = async (req, res) => {
 
     // Find the existing note first to get previous values
     const existingNote = await Note.findOne({
-      _id: req.params.id,
+      _id: id,
       userId: req.user._id,
     });
 
@@ -323,6 +349,8 @@ export const updateNote = async (req, res) => {
       entityType: "note",
       entityId: updatedNote._id,
       entityName: title,
+      title,
+      description,
       details: {
         previous: {
           title: existingNote.title,
@@ -343,6 +371,7 @@ export const updateNote = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 // NoteController End
 
 // Storage Stats (user-specific)
