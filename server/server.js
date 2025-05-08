@@ -46,7 +46,10 @@ app.use(
 app.use((req, res, next) => {
   res.setHeader("Cross-Origin-Opener-Policy", "same-origin-allow-popups");
   res.setHeader("Cross-Origin-Embedder-Policy", "unsafe-none");
-  res.setHeader("Access-Control-Allow-Origin", process.env.GOOGLE_REDIRECT_URI);
+  res.setHeader(
+    "Access-Control-Allow-Origin",
+    process.env.GOOGLE_REDIRECT_URI || "http://localhost:5173 "
+  );
   next();
 });
 
