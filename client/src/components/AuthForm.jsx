@@ -12,16 +12,16 @@ const AuthForm = ({ type }) => {
     password: "",
     name: "",
     confirmPassword: "",
-    image: null, // Changed from empty string to null for file upload
+    avatar: null, // Changed from empty string to null for file upload
   });
   const [previewImage, setPreviewImage] = useState(null);
   const { handleLogin, handleSignup } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    if (e.target.name === "image") {
+    if (e.target.name === "avatar") {
       const file = e.target.files[0];
-      setFormData({ ...formData, image: file });
+      setFormData({ ...formData, avatar: file });
 
       // Create preview for the image
       if (file) {
@@ -49,7 +49,7 @@ const AuthForm = ({ type }) => {
             password: "",
             name: "",
             confirmPassword: "",
-            image: null,
+            avatar: null,
           });
           setPreviewImage(null);
           navigate("/");
@@ -60,7 +60,7 @@ const AuthForm = ({ type }) => {
           !formData.email ||
           !formData.password ||
           !formData.confirmPassword ||
-          !formData.image
+          !formData.avatar
         ) {
           alert("All fields are required");
           return;
@@ -76,7 +76,7 @@ const AuthForm = ({ type }) => {
         formDataToSend.append("name", formData.name);
         formDataToSend.append("email", formData.email);
         formDataToSend.append("password", formData.password);
-        formDataToSend.append("image", formData.image);
+        formDataToSend.append("avatar", formData.avatar);
 
         // Add headers for FormData
         const config = {
@@ -91,7 +91,7 @@ const AuthForm = ({ type }) => {
             password: "",
             name: "",
             confirmPassword: "",
-            image: null,
+            avatar: null,
           });
           setPreviewImage(null);
           navigate("/login");
@@ -104,7 +104,7 @@ const AuthForm = ({ type }) => {
         password: "",
         name: "",
         confirmPassword: "",
-        image: null,
+        avatar: null,
       });
       setPreviewImage(null);
     }
@@ -164,7 +164,7 @@ const AuthForm = ({ type }) => {
                 <input
                   type="file"
                   id="image-upload"
-                  name="image"
+                  name="avatar"
                   accept="image/*"
                   onChange={handleChange}
                   required
