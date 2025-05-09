@@ -194,14 +194,7 @@ function AppRouter() {
             }
           />
           {/* Fallback Route */}
-          <Route
-            path="*"
-            element={
-              <ProtectedRoute>
-                <NotFoundPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
       <footer>
