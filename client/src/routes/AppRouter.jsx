@@ -25,6 +25,7 @@ import PrivacyPolicy from "../pages/ButtomNavigationPage/PrivacyPolicy";
 import About from "../pages/ButtomNavigationPage/About";
 import NotePad from "../component/Notepad";
 import { useAuth } from "../context/AuthContext";
+import NotFoundPage from "../pages/NotFound/NotFpund";
 
 function AppRouter() {
   const { user } = useAuth();
@@ -192,7 +193,14 @@ function AppRouter() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path="/share" element={<ShareButton />} /> */}
+          <Route
+            path="*"
+            element={
+              <ProtectedRoute>
+                <NotFoundPage />
+              </ProtectedRoute>
+            }
+          />
           {/* Fallback Route */}
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
