@@ -193,6 +193,7 @@ function AppRouter() {
               </ProtectedRoute>
             }
           />
+          {/* Fallback Route */}
           <Route
             path="*"
             element={
@@ -201,8 +202,6 @@ function AppRouter() {
               </ProtectedRoute>
             }
           />
-          {/* Fallback Route */}
-          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </main>
       <footer>
