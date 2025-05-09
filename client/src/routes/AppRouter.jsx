@@ -26,7 +26,6 @@ import About from "../pages/ButtomNavigationPage/About";
 import NotePad from "../component/Notepad";
 import { useAuth } from "../context/AuthContext";
 import NotFoundPage from "../pages/NotFound/NotFpund";
-
 function AppRouter() {
   const { user } = useAuth();
   return (
@@ -194,7 +193,10 @@ function AppRouter() {
             }
           />
           {/* Fallback Route */}
-          <Route path="*" element={<NotFoundPage />} />
+          <Route
+            path="*"
+            element={user ? <NotFoundPage /> : <Navigate to="/login" />}
+          />
         </Routes>
       </main>
       <footer>
