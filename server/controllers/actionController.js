@@ -351,7 +351,7 @@ export const generateShareData = async (req, res) => {
   try {
     const { entityType, entityId } = req.params;
     const userId = req.user._id;
-
+    console.log(entityType);
     const model = getModelByType(entityType);
     if (!model) {
       return res.status(400).json({
@@ -384,11 +384,6 @@ export const generateShareData = async (req, res) => {
       case "file":
         sharePath = `/${entityType}/${entity._id}`;
         title = `Check out this file: ${entity.name}`;
-        description = `A file shared with you from ${req.user.name}`;
-        break;
-      case "history":
-        sharePath = `/${entityType}/${entity._id}`;
-        title = `Check out this file: ${entity.entityName}`;
         description = `A file shared with you from ${req.user.name}`;
         break;
       case "note":
@@ -432,7 +427,7 @@ export const shareViaPlatform = async (req, res) => {
     const { entityType, entityId } = req.params;
     const { platform, recipient } = req.body;
     const userId = req.user._id;
-
+    console.log("share", entityType);
     const model = getModelByType(entityType);
     if (!model) {
       return res.status(400).json({

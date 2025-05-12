@@ -111,7 +111,6 @@ export const generateShareDataFunction = async (entityType, entityId) => {
   if (["image", "pdf"].includes(entityType)) {
     entityType = "file";
   }
-
   try {
     const response = await generateShareData(entityType, entityId);
 

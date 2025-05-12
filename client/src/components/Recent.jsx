@@ -81,7 +81,7 @@ const RecentFilesList = ({ data }) => {
     if (actionType === "rename") {
       setRenamingFile({ entityId, entityType, storedId });
     } else if (actionType === "share") {
-      if (file.historyId) {
+      if (file?.historyId) {
         setSelectedItem({
           id: file._id,
           name: file.name || file.title || file.entityName,
@@ -92,7 +92,7 @@ const RecentFilesList = ({ data }) => {
         setSelectedItem({
           id: file._id,
           name: file.entityName,
-          entityType: "history",
+          entityType: file.entityType,
         });
         setIsShareModalOpen(true);
       }
