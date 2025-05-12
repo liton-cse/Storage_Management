@@ -382,17 +382,17 @@ export const generateShareData = async (req, res) => {
 
     switch (entityType) {
       case "file":
-        sharePath = `/:file/${entity._id}`;
+        sharePath = `/${entityType}/${entity._id}`;
         title = `Check out this file: ${entity.name}`;
         description = `A file shared with you from ${req.user.name}`;
         break;
       case "history":
-        sharePath = `/:history/${entity._id}`;
+        sharePath = `/${entityType}/${entity._id}`;
         title = `Check out this file: ${entity.entityName}`;
         description = `A file shared with you from ${req.user.name}`;
         break;
       case "note":
-        sharePath = `/:note/${entity._id}`;
+        sharePath = `/${entityType}/${entity._id}`;
         title = `Check out this note: ${entity.title}`;
         description =
           entity.description.substring(0, 100) +
