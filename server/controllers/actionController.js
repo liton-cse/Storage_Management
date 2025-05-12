@@ -6,7 +6,6 @@ import {
 } from "../utils/performAction.js";
 import fs from "fs";
 import path from "path";
-
 //@ Favorite action - Refactored to use performAction
 //@ method: put.
 //@end-point: api/favourite/:entityType/:entityId.

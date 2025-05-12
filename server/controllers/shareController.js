@@ -8,13 +8,13 @@ export const getSharedContent = async (req, res) => {
 
     let entity;
     switch (entityType) {
-      case "files":
+      case "file":
         entity = await File.findOne({ _id: id });
         break;
-      case "notes":
+      case "note":
         entity = await Note.findOne({ _id: id });
         break;
-      case "historys":
+      case "history":
         entity = await History.findOne({ _id: id });
         break;
       default:
