@@ -89,6 +89,6 @@ export const shareViaPlatform = (entityType, entityId, platform, recipient) =>
 
 //ShareActrion content......start....
 export const getShareContent = (entityType, id) =>
-  API.get(`/shared/${entityType}${id}`);
+  API.get(`/${entityType}${id}`);
 
 //ShareContent .....end ....

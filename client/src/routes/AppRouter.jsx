@@ -194,7 +194,7 @@ function AppRouter() {
             }
           />
           {/* public route to show the content.. */}
-          <Route path="/:entityType/:id" element={<SharedContentViewer />} />
+          <Route path="/history/:id" element={<SharedContentViewer />} />
           {/* Fallback Route */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
