@@ -457,8 +457,10 @@ export const shareViaPlatform = async (req, res) => {
       });
     }
 
-    const baseUrl = process.env.APP_BASE_URL;
-    const sharePath = `/${entityType}s/${entity._id}`;
+    const baseUrl =
+      process.env.APP_BASE_URL ||
+      "https://storage-management-fronend.onrender.com";
+    const sharePath = `/${entityType}/${entity._id}`;
     const shareUrl = `${baseUrl}${sharePath}`;
     const title = `Check out this ${entityType}: ${
       entity.name || entity.title || entity.entityName
