@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import menuRoutes from "./routes/menuRoutes.js";
 import actionRoutes from "./routes/actionRoutes.js";
 import navigationButtomRoutes from "./routes/navigationButtomRoutes.js";
+import shareRoutes from "./routes/shareRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
@@ -61,6 +62,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api", menuRoutes);
 app.use("/api", actionRoutes);
 app.use("/api", navigationButtomRoutes);
+app.use("/api", shareRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));

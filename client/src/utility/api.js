@@ -86,3 +86,9 @@ export const shareViaPlatform = (entityType, entityId, platform, recipient) =>
     recipient,
   });
 // action controller Route.. for the action of documents...end...
+
+//ShareActrion content......start....
+export const getShareContent = (entityType, id) =>
+  API.get(`/shared/${entityType}${id}`);
+
+//ShareContent .....end ....

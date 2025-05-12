@@ -378,7 +378,7 @@ export const generateShareData = async (req, res) => {
 
     const baseUrl =
       process.env.APP_BASE_URL ||
-      "https://storage-management-backend.onrender.com";
+      "https://storage-management-fronend.onrender.com";
     let sharePath, title, description;
 
     switch (entityType) {
@@ -388,7 +388,7 @@ export const generateShareData = async (req, res) => {
         description = `A file shared with you from ${req.user.name}`;
         break;
       case "history":
-        sharePath = `/history/${entity._id}`;
+        sharePath = `/historys/${entity._id}`;
         title = `Check out this file: ${entity.entityName}`;
         description = `A file shared with you from ${req.user.name}`;
         break;
@@ -405,7 +405,6 @@ export const generateShareData = async (req, res) => {
           message: "Unsupported entity type",
         });
     }
-
     const shareUrl = `${baseUrl}${sharePath}`;
 
     res.status(200).json({
@@ -458,9 +457,7 @@ export const shareViaPlatform = async (req, res) => {
       });
     }
 
-    const baseUrl =
-      process.env.APP_BASE_URL ||
-      "https://storage-management-backend.onrender.com";
+    const baseUrl = process.env.APP_BASE_URL;
     const sharePath = `/${entityType}s/${entity._id}`;
     const shareUrl = `${baseUrl}${sharePath}`;
     const title = `Check out this ${entityType}: ${
@@ -495,10 +492,14 @@ export const shareViaPlatform = async (req, res) => {
         )}`;
         break;
       case "messenger":
-        shareLink = `fb-messenger://share/?link=${encodeURIComponent(
+        // Use the newer Facebook Messenger sharing endpoint
+        shareLink = `https://www.facebook.com/dialog/send?app_id=${
+          process.env.FB_APP_ID
+        }&link=${encodeURIComponent(
           shareUrl
-        )}`;
+        )}&redirect_uri=${encodeURIComponent(baseUrl)}`;
         break;
+
       case "twitter":
         shareLink = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
           shareUrl

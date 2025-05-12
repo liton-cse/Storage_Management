@@ -61,6 +61,7 @@ const FileSchema = new mongoose.Schema({
     },
   ],
   historyId: { type: mongoose.Schema.Types.ObjectId, ref: "History" },
+  isShared: { type: Boolean, default: false },
   folder: { type: mongoose.Schema.Types.ObjectId, ref: "Folder" },
   actions: [ActionSchema],
   createdAt: { type: Date, default: Date.now },
@@ -90,6 +91,7 @@ const NoteSchema = new mongoose.Schema({
       permission: { type: String, enum: ["view", "edit"] },
     },
   ],
+  isShared: { type: Boolean, default: false },
   actions: [ActionSchema],
   createdAt: { type: Date, default: Date.now },
 });
@@ -127,7 +129,7 @@ const shareLogSchema = new mongoose.Schema(
     entityType: {
       type: String,
       required: true,
-      enum: ["file", "note"],
+      enum: ["file", "note", "history"],
     },
     entityId: {
       type: mongoose.Schema.Types.ObjectId,

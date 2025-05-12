@@ -26,6 +26,7 @@ import About from "../pages/ButtomNavigationPage/About";
 import NotePad from "../component/Notepad";
 import { useAuth } from "../context/AuthContext";
 import NotFoundPage from "../pages/NotFound/NotFpund";
+import SharedContentViewer from "../pages/Share/ShareContentViewer";
 function AppRouter() {
   const { user } = useAuth();
   return (
@@ -192,11 +193,10 @@ function AppRouter() {
               </ProtectedRoute>
             }
           />
+          {/* public route to show the content.. */}
+          <Route path="/:entityType/:id" element={<SharedContentViewer />} />
           {/* Fallback Route */}
-          <Route
-            path="*"
-            element={user ? <NotFoundPage /> : <Navigate to="/login" />}
-          />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
       <footer>
