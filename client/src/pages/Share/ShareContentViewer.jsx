@@ -29,9 +29,9 @@ const SharedContentViewer = () => {
     fetchContent();
   }, [entityType, id]);
 
-  if (loading) return <div className="loading-spinner">Loading...</div>;
-  if (error) return <div className="error-message">{error}</div>;
-  if (!content) return <div className="no-content">No content available</div>;
+  if (loading) return <div className="share-loading-spinner">Loading...</div>;
+  if (error) return <div className="share-error-message">{error}</div>;
+  if (!content) return <div className="share-no-content">No content available</div>;
 
   const fullFilePath = content?.path
     ? `${API_BASE_URL}${
@@ -43,29 +43,29 @@ const SharedContentViewer = () => {
     switch (content.entityType) {
       case "image":
         return (
-          <div className="image-container">
+          <div className="share-image-container">
             <a
               href={fullFilePath}
               alt={content.name}
               onClick={() => setIsImageModalOpen(true)}
-              className="clickable-image"
+              className="share-clickable-image"
               onError={() => setError("Failed to load image")}
             >
               Show Image
             </a>
             {isImageModalOpen && (
               <div
-                className="modal-overlay"
+                className="share-modal-overlay"
                 onClick={() => setIsImageModalOpen(false)}
               >
                 <div
-                  className="modal-content"
+                  className="share-modal-content"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <img
                     src={fullFilePath}
                     alt="Preview"
-                    className="modal-image"
+                    className="share-modal-image"
                   />
                   <button
                     className="close-button"
@@ -80,19 +80,19 @@ const SharedContentViewer = () => {
         );
       case "pdf":
         return (
-          <div className="pdf-launcher">
+          <div className="share-pdf-launcher">
             <a
               href={fullFilePath}
               target="_blank"
               rel="noopener noreferrer"
-              className="open-pdf-link"
+              className="share-open-pdf-link"
             >
               Open PDF in New Tab
             </a>
             <a
               href={fullFilePath}
               download={content.name}
-              className="download-button"
+              className="share-download-button"
             >
               Download PDF
             </a>
@@ -100,13 +100,13 @@ const SharedContentViewer = () => {
         );
       case "note":
         return (
-          <div className="note-notepad">
+          <div className="share-note-notepad">
             <h2>{content.details.noteTitle || "Untitled Note"}</h2>
-            <pre className="note-body">{content.details.noteDescription}</pre>
+            <pre className="share-note-body">{content.details.noteDescription}</pre>
           </div>
         );
       default:
-        return <div className="unsupported-type">Unsupported content type</div>;
+        return <div className="share-unsupported-type">Unsupported content type</div>;
     }
   };
 
