@@ -113,13 +113,12 @@ export const generateShareDataFunction = async (entityType, entityId) => {
   }
   try {
     const response = await generateShareData(entityType, entityId);
-
     return {
       success: true,
       message: response.data.data,
     };
   } catch (error) {
-    console.error("Rename action failed:", error);
+    console.error("generate link failed:", error);
     return {
       success: false,
       message: error?.response?.data?.message,

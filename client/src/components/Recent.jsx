@@ -92,7 +92,7 @@ const RecentFilesList = ({ data }) => {
         setSelectedItem({
           id: file._id,
           name: file.entityName,
-          entityType: file.entityType,
+          entityType: "history",
         });
         setIsShareModalOpen(true);
       }

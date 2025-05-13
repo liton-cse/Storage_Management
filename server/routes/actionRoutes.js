@@ -41,16 +41,8 @@ router.delete(
 // for Share data ...
 
 // Generate share data for an entity
-router.get(
-  "/share/data/:entityType/:entityId",
-  authenticate,
-  generateShareData
-);
+router.get("/share/:entityType/:entityId", authenticate, generateShareData);
 
 // Share via specific platform
-router.post(
-  "/share/platform/:entityType/:entityId",
-  authenticate,
-  shareViaPlatform
-);
+router.post("/share/:entityType/:entityId", authenticate, shareViaPlatform);
 export default router;

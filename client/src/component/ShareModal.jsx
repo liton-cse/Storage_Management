@@ -40,6 +40,7 @@ const ShareModal = ({ isOpen, onClose, entityType, entityId }) => {
             entityType,
             entityId
           );
+          console.log(response.message);
           setShareData(response.message);
         } catch (err) {
           console.log("Failed to load share data", err);

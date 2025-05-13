@@ -1,34 +1,26 @@
-// SharedContentViewer.jsx
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "../../styles/ShareStyle/ShareContent.css";
-
 import { getShareContentFunction } from "../../context/ShareFunction";
 
-function SharedContentViewer() {
+const SharedContentViewer = () => {
   const { entityType, id } = useParams();
-
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+
+  const API_BASE_URL = import.meta.env.VITE_APP_API_BASE_URL || "";
 
   useEffect(() => {
     const fetchContent = async () => {
       try {
+        setLoading(true);
+        setError(null);
         const response = await getShareContentFunction(entityType, id);
-        if (entityType === "files") {
-          // Handle file content
-          const blob = new Blob([response.message], {
-            type: response.headers["content-type"],
-          });
-          const url = URL.createObjectURL(blob);
-          setContent({ type: "file", url });
-        } else {
-          // Handle notes/history
-          setContent({ type: entityType, data: response.message });
-        }
+        setContent(response.message);
       } catch (err) {
-        setError(err?.message || "Failed to load content");
+        setError(err.response?.data?.error || "Failed to load content");
       } finally {
         setLoading(false);
       }
@@ -37,38 +29,88 @@ function SharedContentViewer() {
     fetchContent();
   }, [entityType, id]);
 
-  if (loading) return <div className="spinner">Loading...</div>;
-  if (error) return <div className="error">{error}</div>;
+  if (loading) return <div className="loading-spinner">Loading...</div>;
+  if (error) return <div className="error-message">{error}</div>;
+  if (!content) return <div className="no-content">No content available</div>;
 
-  return (
-    <div className="shared-content-area">
-      {content.type === "file" ? (
-        <div className="file-content-viewer">
-          <img
-            src={content.url}
-            alt="Shared file"
-            onError={() => setError("Failed to display image")}
-            style={{ maxWidth: "100%", maxHeight: "80vh" }}
-          />
-          <div className="file-action-button">
-            <button onClick={() => window.open(content.url, "_blank")}>
-              Open in new tab
-            </button>
-          </div>
-        </div>
-      ) : (
-        <div className="note-content-viewer">
-          <h1>{content.data.title || content.data.entityName}</h1>
-          <div className="note-content">
-            {content.type === "notes" ? (
-              <p>{content.data.description}</p>
-            ) : (
-              <pre>{JSON.stringify(content.data, null, 2)}</pre>
+  const fullFilePath = content?.path
+    ? `${API_BASE_URL}${
+        content.path.startsWith("/") ? content.path : `/${content.path}`
+      }`
+    : "";
+
+  const renderContent = () => {
+    switch (content.entityType) {
+      case "image":
+        return (
+          <div className="image-container">
+            <a
+              href={fullFilePath}
+              alt={content.name}
+              onClick={() => setIsImageModalOpen(true)}
+              className="clickable-image"
+              onError={() => setError("Failed to load image")}
+            >
+              Show Image
+            </a>
+            {isImageModalOpen && (
+              <div
+                className="modal-overlay"
+                onClick={() => setIsImageModalOpen(false)}
+              >
+                <div
+                  className="modal-content"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <img
+                    src={fullFilePath}
+                    alt="Preview"
+                    className="modal-image"
+                  />
+                  <button
+                    className="close-button"
+                    onClick={() => setIsImageModalOpen(false)}
+                  >
+                    &times;
+                  </button>
+                </div>
+              </div>
             )}
           </div>
-        </div>
-      )}
-    </div>
-  );
-}
+        );
+      case "pdf":
+        return (
+          <div className="pdf-launcher">
+            <a
+              href={fullFilePath}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="open-pdf-link"
+            >
+              Open PDF in New Tab
+            </a>
+            <a
+              href={fullFilePath}
+              download={content.name}
+              className="download-button"
+            >
+              Download PDF
+            </a>
+          </div>
+        );
+      case "note":
+        return (
+          <div className="note-notepad">
+            <h2>{content.details.noteTitle || "Untitled Note"}</h2>
+            <pre className="note-body">{content.details.noteDescription}</pre>
+          </div>
+        );
+      default:
+        return <div className="unsupported-type">Unsupported content type</div>;
+    }
+  };
+
+  return <div className="shared-content-viewer">{renderContent()}</div>;
+};
+
 export default SharedContentViewer;

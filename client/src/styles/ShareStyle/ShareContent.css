@@ -1,139 +1,174 @@
-/* SharedContent.css */
+/* ====== Base Styles - Mobile First ====== */
 
-/* Base mobile styles */
-.shared-content-area {
+.shared-content-viewer {
   padding: 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  margin: 60px auto;
+  align-items: center;
   width: 100%;
-  min-height: 100vh;
+}
+
+/* Loading and Error States */
+.loading-spinner,
+.error-message,
+.no-content,
+.unsupported-type {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 2rem;
+}
+.image-container,
+.pdf-launcher {
   display: flex;
   flex-direction: column;
-  background-color: #f5f5f5;
-}
-
-.spinner,
-.error {
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh; /* optional: center vertically too */
+  gap: 1rem; /* spacing between buttons */
   text-align: center;
-  padding: 2rem;
-  font-size: 1.2rem;
 }
 
-.error {
-  color: #d32f2f;
-  background-color: #ffebee;
-  border-radius: 4px;
-  margin: 1rem;
+/* ====== Image Viewer ====== */
+
+.clickable-image {
+  display: inline-block;
+  padding: 0.75rem 1.25rem;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
 }
 
-.file-content-viewer,
-.note-content-viewer {
-  background: white;
-  border-radius: 8px;
-  padding: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 1rem;
+.clickable-image:hover {
+  background-color: #0056b3;
 }
 
-.file-content-viewer img {
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  object-fit: contain;
-  margin-bottom: 1rem;
-}
-
-.file-action-button {
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.85);
   display: flex;
   justify-content: center;
+  align-items: center;
+  z-index: 999;
+  padding: 1rem;
 }
 
-.file-action-button button {
-  padding: 0.5rem 1rem;
-  background-color: #1976d2;
-  color: white;
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  background-color: transparent;
+}
+
+.modal-image {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+.close-button {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  font-size: 1.5rem;
+  background: #fff;
+  color: #000;
   border: none;
-  border-radius: 4px;
-  font-size: 0.9rem;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.file-action-button button:hover {
-  background-color: #1565c0;
+
+.open-pdf-link,
+.download-button {
+  display: inline-block;
+  margin: 0.5rem;
+  padding: 0.6rem 1rem;
+  background-color: #28a745;
+  color: white;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
 
-.note-content-viewer h1 {
-  font-size: 1.4rem;
-  margin-bottom: 1rem;
+.open-pdf-link:hover,
+.download-button:hover {
+  background-color: #218838;
+}
+
+/* ====== Note Viewer ====== */
+.note-notepad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 1rem 1rem;
+  padding: 1rem;
+  background-color: #fffbea;
+  border-left: 5px solid #ffc107;
+  border-radius: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+
+.note-notepad h2 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.note-body {
+  white-space: pre-wrap;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1rem;
+  line-height: 1.5;
   color: #333;
 }
 
-.note-content {
-  line-height: 1.6;
-  color: #424242;
-}
-
-.note-content pre {
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-family: inherit;
-  background-color: #f5f5f5;
-  padding: 1rem;
-  border-radius: 4px;
-  overflow-x: auto;
-}
-
-/* Tablet styles (min-width: 768px) */
-@media (min-width: 768px) {
-  .shared-content-area {
-    padding: 1.5rem;
+/* ====== Responsive Styles (Tablet & Desktop) ====== */
+@media (min-width: 600px) {
+  .modal-content {
+    max-width: 650px;
   }
 
-  .file-content-viewer,
-  .note-content-viewer {
-    padding: 1.5rem;
-    max-width: 800px;
-    margin: 0 auto 1.5rem;
+  .note-notepad {
+    max-width: 90%;
+    margin: 2rem auto;
   }
 
-  .file-content-viewer img {
-    max-height: 70vh;
+  .clickable-image {
+    font-size: 1.1rem;
+    padding: 1rem 1.5rem;
   }
 
-  .note-content-viewer h1 {
-    font-size: 1.6rem;
+  .open-pdf-link,
+  .download-button {
+    font-size: 1.05rem;
   }
 }
 
-/* Desktop styles (min-width: 1024px) */
 @media (min-width: 1024px) {
-  .shared-content-area {
-    padding: 2rem;
+  .shared-content-viewer {
+    padding: 2rem 4rem;
   }
 
-  .file-content-viewer,
-  .note-content-viewer {
-    padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  .note-notepad {
+    max-width: 800px;
+    font-size: 1.1rem;
   }
 
-  .file-action-button button {
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-  }
-
-  .note-content-viewer h1 {
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-  }
-}
-
-/* Large desktop styles (min-width: 1440px) */
-@media (min-width: 1440px) {
-  .shared-content-area {
-    padding: 3rem;
-  }
-
-  .file-content-viewer img {
-    max-height: 80vh;
+  .modal-content {
+    max-width: 800px;
   }
 }

@@ -350,8 +350,8 @@ const validateTelegramId = (id) => {
 export const generateShareData = async (req, res) => {
   try {
     const { entityType, entityId } = req.params;
+
     const userId = req.user._id;
-    console.log(entityType);
     const model = getModelByType(entityType);
     if (!model) {
       return res.status(400).json({
@@ -378,12 +378,18 @@ export const generateShareData = async (req, res) => {
     const baseUrl =
       process.env.APP_BASE_URL ||
       "https://storage-management-fronend.onrender.com";
+    // const baseUrl = "http://localhost:5173";
     let sharePath, title, description;
 
     switch (entityType) {
       case "file":
         sharePath = `/${entityType}/${entity._id}`;
         title = `Check out this file: ${entity.name}`;
+        description = `A file shared with you from ${req.user.name}`;
+        break;
+      case "history":
+        sharePath = `/${entityType}/${entity._id}`;
+        title = `Check out this file: ${entity.entityName}`;
         description = `A file shared with you from ${req.user.name}`;
         break;
       case "note":
@@ -399,6 +405,11 @@ export const generateShareData = async (req, res) => {
           message: "Unsupported entity type",
         });
     }
+    // Validate URL structure
+    if (!baseUrl.startsWith("http")) {
+      throw new Error("Invalid base URL: Must start with http:// or https://");
+    }
+
     const shareUrl = `${baseUrl}${sharePath}`;
 
     res.status(200).json({
@@ -454,6 +465,7 @@ export const shareViaPlatform = async (req, res) => {
     const baseUrl =
       process.env.APP_BASE_URL ||
       "https://storage-management-fronend.onrender.com";
+    // const baseUrl = "http://localhost:5173";
     const sharePath = `/${entityType}/${entity._id}`;
     const shareUrl = `${baseUrl}${sharePath}`;
     const title = `Check out this ${entityType}: ${
@@ -464,13 +476,20 @@ export const shareViaPlatform = async (req, res) => {
     switch (platform) {
       case "whatsapp":
         const phone = recipient ? validatePhoneNumber(recipient) : "";
+        if (phone && !/^\+?[\d]{5,}$/.test(phone)) {
+          throw new Error("Invalid WhatsApp number format");
+        }
+
+        // Encode the entire message (title + URL)
+        const whatsappMessage = `${title}\n\n${shareUrl}`;
         shareLink = phone
-          ? `https://wa.me/${phone}?text=${encodeURIComponent(
-              title
-            )}%20${encodeURIComponent(shareUrl)}`
-          : `https://wa.me/?text=${encodeURIComponent(
-              title
-            )}%20${encodeURIComponent(shareUrl)}`;
+          ? `https://wa.me/${phone}?text=${encodeURIComponent(whatsappMessage)}`
+          : `https://wa.me/?text=${encodeURIComponent(whatsappMessage)}`;
+
+        // Validate the final URL
+        if (!shareLink.startsWith("https://wa.me/")) {
+          throw new Error("Invalid WhatsApp URL generated");
+        }
         break;
       case "telegram":
         const tgUser = recipient ? validateTelegramId(recipient) : "";

@@ -79,9 +79,9 @@ export const renameAction = (entityType, entityId, storedId, newName) =>
   API.put(`/rename/${entityType}/${entityId}/${storedId}`, { newName });
 
 export const generateShareData = (entityType, entityId) =>
-  API.get(`/share/data/${entityType}/${entityId}`);
+  API.get(`/share/${entityType}/${entityId}`);
 export const shareViaPlatform = (entityType, entityId, platform, recipient) =>
-  API.post(`/share/platform/${entityType}/${entityId}`, {
+  API.post(`/share/${entityType}/${entityId}`, {
     platform,
     recipient,
   });
@@ -89,6 +89,6 @@ export const shareViaPlatform = (entityType, entityId, platform, recipient) =>
 
 //ShareActrion content......start....
 export const getShareContent = (entityType, id) =>
-  API.get(`/${entityType}${id}`);
+  API.get(`/${entityType}/${id}`);
 
 //ShareContent .....end ....
